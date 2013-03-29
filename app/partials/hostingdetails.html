@@ -1,0 +1,70 @@
+
+<div ng-repeat="plan in hostingplans" >
+ <div class="box">
+        <div class="box-header">
+            <h2>
+                <i class="halflings-icon edit"></i>
+                <span class="break"></span>
+                Edit Hosting Details</h2>
+        </div>
+        <div class="box-content">
+            <form class="form-horizontal">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="client-id">Client ID:
+                        </label>
+                        <div class="controls">
+                            <input ng-model="plan.clientId" type="text" class="span2" id="client-id" name="client-id" disabled/>
+                            <p class="help-block">Stored Client ID</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="record-id">Record ID:
+                        </label>
+                        <div class="controls">
+                            <input ng-model="plan.id" type="text" class="span2" id="record-id" name="record-id" disabled/>
+                            <p class="help-block">Stored Record ID</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="level-id">Level(s):
+                        </label>
+                        <div class="controls">
+                            <input ng-model="plan.levelId" type="text" class="span6 typeahead" id="level-id" name="level-id" required/>
+                            <ul class="typeahead dropdown-menu" style="top: 40px; left: 190px; display: none;">
+                                <li data-value="1"><a href='#'>Level 1</a></li>
+                                <li data-value="2"><a href='#'>Level 2</a></li>
+                                <li data-value="3"><a href='#'>Level 3</a></li>
+                            </ul>
+                            <p class="help-block">This is the present level of the client account for hosting. eg Rackspace Leve 1</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="backuplocation1">Backup Location 2:</label>
+                        <div class="controls">
+                            <input ng-model="plan.backuplocation1" type="text" class="span6" id="backuplocation1" name="backuplocation1"/>
+                            <p class="help-block">eg Server01:/var/www/xyz</p>
+                        </div>
+                    </div>
+                    <div class="controls-group">
+                    	<label class="control-label" for="backuplocation1">Backup Location 1:</label>
+                        <div class="controls">
+                        	<input ng-model="plan.backuplocation1" type="text" class="span6" id="backuplocation2" name="backuplocation2"/>
+                        	<p class="help-block">eg Server01:/var/www/xyz</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="notes">Notes:</label>
+                        <div class="controls">
+                            <textarea ng-model="plan.notes" name="notes" class="span5" id="notes" rows="3" style="width: 500px; height: 197px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button ng-click="saveHosting()" type="save" class="save btn-success" id="save-{{plan.id}}">Save</button>
+                        <button type="delete" class="delete btn btn-danger">Delete</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

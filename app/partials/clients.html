@@ -1,0 +1,13 @@
+<!--the fact that this works so easily is mind blowing-->
+
+<form>
+  <fieldset>
+    <input  type="text" ng-model="query"  placeholder="Client Name..">
+  </fieldset>
+</form>
+
+<ul class="nav nav-tabs nav-stacked">
+<li ng-repeat="client in clients | filter:query" >
+	<a href="#/hostings/{{client.clientId}}" class="ng-click">{{client.clientName}}</a>
+</li>
+</ul>

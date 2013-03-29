@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <title>My AngularJS App</title>
+  <link rel="stylesheet" href="css/app.css"/>
+  <link rel="stylesheet" href="css/bootstrap.css"/>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span1">
+      <div data-ng-include data-src="'partials/services.html'"></div>
+    </div>
+    <div class="span2">
+      <div ng-view></div>
+    </div>
+    <div class="span9">
+      Forms Here
+    </div>
+
+  </div>
+
+</div>
+
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+  -->
+  <script src="lib/angular/angular.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/directives.js"></script>
+</body>
+</html>
