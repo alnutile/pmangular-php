@@ -66,7 +66,11 @@ function PeopleList(People, $location, $scope) {
   //   $scope.peopleList = data;
   // });
 
-	$scope.people = People.api.query();
+	$scope.peopleList = People.api.query();
+
+    $scope.$on('handleBroadcast', function() {
+        $scope.peopleList = People.api.query(); 
+    });   
 
 	$scope.clickedName = function(personList, index) {
 		var personClicked = $scope.personClicked = [];
@@ -77,29 +81,22 @@ function PeopleList(People, $location, $scope) {
 PeopleList.$inject = ['People', '$location', '$scope'];
 
 
-function PersonDetails(People, $scope, $routeParams, $location) {
-	$scope.personDetails = People.api.get({personId:$routeParams.personId})
-	console.log($scope.personDetails);
+function PersonDetails(People, $routeParams, $location, $scope) {
+	$scope.personDetails = People.api.get({personId: $routeParams.personId})
+
 	$scope.savePerson = function() {
 		//var personId = personDetails.id;
 		if($scope.personDetails.id > 0) {
 			People.api.update({personId:$scope.personDetails.id}, $scope.personDetails, function (res) { 
+				console.log($scope.personDetails);
 				People.broadcastChange();
 			});
 		} else {
-			var personId = this.personDetails.id;
-			console.log(personId);
-			$http.put('api/v3/person/' + this.personDetails.id, this.personDetails).success(function(results){
-				$location.path('/people/2');
- 			});
+			People.api.save({}, $scope.personDetails, function(res){
+				People.broadcastChange();
+			});
 		}
-	}	
-
-	$http.get('api/v3/person/' + $routeParams.personId).success(function(data) {
-	$scope.personDetails = data;
-		if($scope.personDetails.length == 0) {
-			var personDetails = {};
-			$scope.personDetails = { id:0, fname: 'Name Me', lname: '...', notes:'New Record', phone:"None Set Yet" };
-		}
-	});
+	}
 }
+
+PersonDetails.$inject = ['People', '$routeParams', '$location', '$scope'];

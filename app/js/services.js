@@ -1,10 +1,3 @@
-'use strict';
-
-/* Services */
-
-
-//from the cellar project
-
 //Syntax allows to chain factories
 angular.module('myApp.services', ['ngResource']).
 	//The factory returns objects / functions that can be used by the controllers
@@ -12,7 +5,7 @@ angular.module('myApp.services', ['ngResource']).
         return {
         	//the resource provider interacting with the PHP backend
 	        api: 
-				$resource('api/person/:personId', {}, {
+				$resource('api/v3/person/:personId', {}, {
 			        update: {method:'PUT'}
 				}),
 			/*
@@ -20,14 +13,30 @@ angular.module('myApp.services', ['ngResource']).
 			* The WineDetailCtrl emits it on each save, update or delete request, so that the WineListCtrl can react and update itself.	
 			*/
 			broadcastChange: function(){
+				console.log('Running broadcast change');
+				console.log($rootScope.$broadcast);
+				$rootScope.$broadcast('handleBroadcast');
+			}
+
+		}
+	}]),
+
+    factory('Clients', ['$resource', '$http', '$rootScope', function($resource, $http, $rootScope){
+        return {
+        	//the resource provider interacting with the PHP backend
+	        api: 
+				$resource('api/v3/client/:clientId', {}, {
+			        update: {method:'PUT'}
+				}),
+			/*
+			* A generic function that can be called to emit an event on one ctrl that can be handled by another ctrl.
+			* The WineDetailCtrl emits it on each save, update or delete request, so that the WineListCtrl can react and update itself.	
+			*/
+			broadcastChange: function(){
+				console.log('Running broadcast change');
+				console.log($rootScope.$broadcast);
 				$rootScope.$broadcast('handleBroadcast');
 			}
 
 		}
 	}])
-
-
-// // Demonstrate how to register services
-// // In this case it is a simple value service.
-// angular.module('myApp.services', []).
-//   value('version', '0.1');

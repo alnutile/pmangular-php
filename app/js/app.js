@@ -15,7 +15,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives'])
     $routeProvider.when('/hostings/:clientId', {templateUrl: 'partials/hostingdetails.html', controller: HostingDetails});
  
     /*People Service*/
-    $routeProvider.when('/people', {templateUrl: 'partials/peopleList.html', controller: PeopleList});
+    $routeProvider.when('/people', {templateUrl: 'partials/peopleList.html'});
     $routeProvider.when('/people/:personId', {templateUrl: 'partials/peopleDetails.html', controller: PersonDetails});
 
 
