@@ -2,12 +2,37 @@
 
 /* Controllers */
 
-function ClientList($scope, $http) {
-  $http.get('api/v3/client').success(function(data) {
-    $scope.clients = data;
-  });
+function ClientList(Client, $location, $scope) {
+  // $http.get('api/v3/person').success(function(data) {
+  //   $scope.peopleList = data;
+  // });
 
+	$scope.clientList = Client.api.query();
+
+    $scope.$on('handleBroadcast', function() {
+        $scope.clientList = Client.api.query(); 
+    });   
 }
+//@todo look at why this extra call
+ClientList.$inject = ['Client', '$location', '$scope'];
+
+function ClientDetails(Client, $routeParams, $location, $scope) {
+	$scope.clientDetails = Client.api.get({clientId: $routeParams.clientId})
+
+	$scope.saveClient = function() {
+		if($scope.clientDetails.id > 0) {
+			Client.api.update({clientId:$scope.clientDetails.id}, $scope.clientDetails, function (res) { 
+				Client.broadcastChange();
+			});
+		} else {
+			Client.api.save({}, $scope.clientDetails, function(res){
+				Client.broadcastChange();
+			});
+		}
+	}
+}
+
+ClientDetails.$inject = ['Client', '$routeParams', '$location', '$scope'];
 
 function HostingDetails($scope, $routeParams, $http) {
 	
@@ -32,33 +57,6 @@ function HostingDetails($scope, $routeParams, $http) {
 		}
 	});
 }
-
-function ClientDetails($scope, $routeParams, $http) {
-	
-	$scope.saveClient = function() {
-		if(this.clientsDetails.id === 0) {
-			$http.post('api/v3/client', this.clientsDetails).success(function(results){
-				$scope.clientsDetails[0] = results;
-			});
-
-		} else {
-			$http.put('api/v3/client/' + this.clientsDetails.id, this.clientsDetails).success(function(results){
-
-			});
-		}
-
-	}	
-
-	$http.get('api/v3/client/' + $routeParams.clientId).success(function(data) {
-	$scope.clientsDetails = data;
-		if($scope.clientsDetails.length == 0) {
-			var clientsDetails = {};
-			$scope.clientsDetails = { id:0, clientName: 'Name Me', notes:'New Record', phone:"None Set Yet", phone2: '...'};
-		}
-	});
-}
-
-
 
 
 function PeopleList(People, $location, $scope) {
@@ -88,7 +86,6 @@ function PersonDetails(People, $routeParams, $location, $scope) {
 		//var personId = personDetails.id;
 		if($scope.personDetails.id > 0) {
 			People.api.update({personId:$scope.personDetails.id}, $scope.personDetails, function (res) { 
-				console.log($scope.personDetails);
 				People.broadcastChange();
 			});
 		} else {

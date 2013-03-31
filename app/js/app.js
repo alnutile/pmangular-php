@@ -7,7 +7,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives'])
     $routeProvider.when('/dash', {templateUrl: 'partials/dash.html', controller: ClientList});
 
     /*Client Service*/
-    $routeProvider.when('/clients', {templateUrl: 'partials/clientsList.html', controller: ClientList});
+    $routeProvider.when('/clients', {templateUrl: 'partials/clientsList.html'});
     $routeProvider.when('/clients/:clientId', {templateUrl: 'partials/clientDetails.html', controller: ClientDetails});
     
     /*Hosting Service*/

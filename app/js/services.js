@@ -13,15 +13,13 @@ angular.module('myApp.services', ['ngResource']).
 			* The WineDetailCtrl emits it on each save, update or delete request, so that the WineListCtrl can react and update itself.	
 			*/
 			broadcastChange: function(){
-				console.log('Running broadcast change');
-				console.log($rootScope.$broadcast);
 				$rootScope.$broadcast('handleBroadcast');
 			}
 
 		}
-	}]),
-
-    factory('Clients', ['$resource', '$http', '$rootScope', function($resource, $http, $rootScope){
+	}]).
+	//The factory returns objects / functions that can be used by the controllers
+    factory('Client', ['$resource', '$http', '$rootScope', function($resource, $http, $rootScope){
         return {
         	//the resource provider interacting with the PHP backend
 	        api: 
@@ -33,10 +31,9 @@ angular.module('myApp.services', ['ngResource']).
 			* The WineDetailCtrl emits it on each save, update or delete request, so that the WineListCtrl can react and update itself.	
 			*/
 			broadcastChange: function(){
-				console.log('Running broadcast change');
-				console.log($rootScope.$broadcast);
 				$rootScope.$broadcast('handleBroadcast');
 			}
 
 		}
 	}])
+

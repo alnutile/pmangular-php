@@ -5,7 +5,7 @@
 	</form>
 
 	<ul class="nav nav-tabs nav-stacked" ng-controller='ClientList'>
-		<li ng-repeat="client in clients | filter:query" >
+		<li ng-repeat="client in clientList | filter:query" >
 			<a href="#/clients/{{client.clientId}}" class="ng-click">{{client.clientName}}</a>
 		</li>
 	</ul>
