@@ -1,0 +1,43 @@
+
+<div data-ng-include data-src="'partials/clientsList.html'"></div>
+
+<div class="span8">
+
+	<div class="alert alert-success">
+	  Manage Client Records here. 
+	  If there already is a plan you can edit it below as well.
+	  If there was no record just edit the template below.
+	</div>
+		<!--start accordion-->
+		<div class="accordion" id="accordion2">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse1">
+						Edit Client Details for Client {{clientsDetails.clientName}}
+					</a>
+				</div>
+				<div id="collapse1" class="accordion-body collapse">
+		      		<div class="accordion-inner">
+		        		<form class="form-horizontal">
+									<label for="client-id">Client ID:</label>
+									<input ng-model="clientsDetails.id" type="text" class="span2" id="client-id" name="client-id" disabled/>
+									<label for="phone1">Phone:</label>
+									<input ng-model="clientsDetails.phone" type="text" class="span6" id="phone"/>
+									<label for="phone2">Phone 2:</label>
+									<input ng-model="clientsDetails.phone2" type="text" class="span6" id="phone2"/>
+									<label for="notes">Notes:</label>
+									<textarea ng-model="clientsDetails.notes" name="notes" class="span5" id="notes" rows="3" style="width: 500px; height: 197px;"></textarea>
+								<div class="form-actions">
+									<button ng-click="saveClient()" type="save" class="save btn-primary" id="save-{{clientsDetails.id}}">Save</button>
+									<button type="delete" class="delete btn btn-danger">Delete</button>
+								</div>
+			            </form>
+		      		</div>
+		    	</div>
+			</div>
+		</div>
+		<!--end accordion-->
+</div>
+
+
+

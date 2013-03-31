@@ -6,6 +6,18 @@
  */
 
 
+function getClients() {
+	$sql = "select *, client.id as clientId FROM client ORDER BY clientName";
+	try {
+		$db = getConnection();
+		$stmt = $db->query($sql);  
+		$clients = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($clients);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
 
 function getClient($id) {
 	$sql = "SELECT * FROM client WHERE id=:id";
@@ -23,7 +35,6 @@ function getClient($id) {
 }
 
 function addClient() {
-	error_log('addClient\n', 3, '/var/tmp/pmbackend.log');
 	$request = Slim::getInstance()->request();
 	$client = json_decode($request->getBody());
 	$sql = "INSERT INTO client (id, drupalId, clientName, phone, phone2, notes) VALUES (NULL, NULL, :clientName, :phone, :phone2, :note)";
@@ -56,7 +67,7 @@ function updateClient($id) {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("clientName", $client->clientName);
-		$stmt->bindParam("notes", $client->note);
+		$stmt->bindParam("notes", $client->notes);
 		$stmt->bindParam("phone", $client->phone);
 		$stmt->bindParam("phone2", $client->phone2);
 		$stmt->bindParam("id", $id);

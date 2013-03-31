@@ -1,0 +1,12 @@
+<!--the fact that this works so easily is mind blowing-->
+<div class="span2">
+	<form>
+	    <input class="input-small search-query" type="text" ng-model="query"  placeholder="Client Name..">
+	</form>
+
+	<ul class="nav nav-tabs nav-stacked" ng-controller='ClientList'>
+		<li ng-repeat="client in clients | filter:query" >
+			<a href="#/hostings/{{client.clientId}}" class="ng-click">{{client.clientName}}</a>
+		</li>
+	</ul>
+</div>

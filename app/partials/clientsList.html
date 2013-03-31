@@ -1,7 +1,8 @@
 <!--the fact that this works so easily is mind blowing-->
-
 <div class="span2">
-  <h4>Client List</h4>
+	<form>
+	    <input class="input-small search-query" type="text" ng-model="query"  placeholder="Client Name..">
+	</form>
 
 	<ul class="nav nav-tabs nav-stacked" ng-controller='ClientList'>
 		<li ng-repeat="client in clients | filter:query" >
@@ -9,4 +10,3 @@
 		</li>
 	</ul>
 </div>
-<div class="span8">Client Dash</div>

@@ -1,0 +1,50 @@
+
+<div data-ng-include data-src="'partials/peopleList.html'"></div>
+
+<div class="span8">
+
+	<div class="alert alert-success">
+	  Manage People Records here. 
+	  If there already is a plan you can edit it below as well.
+	  If there was no record just edit the template below.
+	</div>
+		<!--start accordion-->
+		<div class="accordion" id="accordion2">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse1">
+						Edit Details for {{personDetails.fname}} {{personDetails.lname}}
+					</a>
+				</div>
+				<div id="collapse1" class="accordion-body collapse">
+		      		<div class="accordion-inner">
+		        		<form class="form-horizontal">
+									<label for="client-id">Person ID:</label>
+									<input ng-model="personDetails.id" type="text" class="span2" id="client-id" name="client-id" disabled/>
+									<label for="phone1">First Name:</label>
+									<input ng-model="personDetails.fname" type="text" class="span6"/>
+									<label for="phone1">Last Name:</label>
+									<input ng-model="personDetails.lname" type="text" class="span6"/>
+									<label for="phone1">Phone:</label>
+									<input ng-model="personDetails.phone" type="text" class="span6"/>
+									<label for="phone1">Email:</label>
+									<input ng-model="personDetails.email" type="text" class="span6"/>
+									<label for="phone1">Status:</label>
+									<input ng-model="personDetails.status" type="text" class="span6"/>
+									<label for="notes">Notes:</label>
+									<textarea ng-model="personDetails.notes" name="notes" class="span5" id="notes" rows="3" style="width: 500px; height: 197px;"></textarea>
+								<div class="form-actions">
+									<button ng-click="savePerson()" type="save" class="save btn-primary" id="save-{{personDetails.id}}">Save</button>
+									<button type="delete" class="delete btn btn-danger">Delete</button>
+								</div>
+			            </form>
+		      		</div>
+		    	</div>
+			</div>
+		</div>
+		<i class="icon-envelope"></i>  <a href="mailto:{{personDetails.email}}">{{personDetails.email}}</a>
+		<!--end accordion-->
+</div>
+
+
+

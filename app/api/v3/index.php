@@ -12,6 +12,8 @@
 require 'Slim/Slim.php';
 require 'migration.php';
 require 'clients.php';
+require 'people.php';
+
 require 'migration_projects.php';
 require 'migration_people.php';
 require 'migration_features.php';
@@ -21,15 +23,22 @@ $app = new Slim();
 
 //Client URLs
 $app->get('/client', 'getClients');
-$app->get('/clients/:id',	'getClient');
-$app->get('/clients/search/:query', 'findClientByName');
-$app->post('/clients', 'addClient');
-$app->put('/clients/:id', 'updateClient');
-$app->delete('/clients/:id',	'deleteClient');
+$app->get('/client/:id', 'getClient');
+$app->get('/client/search/:query', 'findClientByName');
+$app->post('/client', 'addClient');
+$app->put('/client/:id', 'updateClient');
+$app->delete('/client/:id',	'deleteClient');
+
+//People URLs
+$app->get('/person', 'getPeople');
+$app->get('/person/:id','getPerson');
+$app->post('/person', 'addPerson');
+$app->put('/person/:id', 'updatePerson');
+$app->delete('/person/:id',	'deletePerson');
 
 //Hosting URLs
 $app->get('/hostings', 'getHostings');
-$app->get('/hostings/:id',	'getHosting');
+$app->get('/hostings/:id', 'getHosting');
 $app->get('/hostings/search/:query', 'findByName');
 $app->post('/hostings', 'addHosting');
 $app->put('/hostings/:id', 'updateHosting');
@@ -43,23 +52,6 @@ $app->get('/migrate/features', 'featuresImport');
 $app->get('/migrate/tasks', 'tasksImport');
 
 $app->run();
-
-function getClients() {
-	$sql = "select *, client.id as clientId FROM client ORDER BY clientName";
-	error_log('Running Clients Query inline', 3, '/var/tmp/pmbackend.log'); 
-	try {
-		$db = getConnection();
-		$stmt = $db->query($sql);  
-		$clients = $stmt->fetchAll(PDO::FETCH_OBJ);
-		$db = null;
-		$results = print_r($clients, 1);
-		error_log($results, 3, '/var/tmp/pmbackend.log'); 
-
-		echo json_encode($clients);
-	} catch(PDOException $e) {
-		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
-	}
-}
 
 
 function getHostings() {
