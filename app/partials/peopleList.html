@@ -4,7 +4,7 @@
 	    <input class="input-small search-query" type="text" ng-model="query"  placeholder="Name..">
 	</form>
 
-	<ul class="nav nav-tabs nav-stacked" ng-controller='PeopleList'>
+	<ul id="people" class="nav nav-tabs nav-stacked" ng-controller='PeopleList'>
 		<li ng-repeat="personList in peopleList | filter:query" >
 			<a ng-click="clickedName(personList, $index)" href="#/people/{{personList.id}}">{{personList.fname}} {{personList.lname}}</a>
 		</li>

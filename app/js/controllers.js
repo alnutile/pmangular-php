@@ -3,9 +3,6 @@
 /* Controllers */
 
 function ClientList(Client, $location, $scope) {
-  // $http.get('api/v3/person').success(function(data) {
-  //   $scope.peopleList = data;
-  // });
 
 	$scope.clientList = Client.api.query();
 
@@ -34,35 +31,40 @@ function ClientDetails(Client, $routeParams, $location, $scope) {
 
 ClientDetails.$inject = ['Client', '$routeParams', '$location', '$scope'];
 
-function HostingDetails($scope, $routeParams, $http) {
-	
+
+
+function HostingDetails(Hosting, $routeParams, $location, $scope) {
+ 	$scope.hostingPlans = Hosting.api.query({clientId: $routeParams.clientId}, [], function(results){
+ 		if(results.length < 1) {
+ 			var hostingPlans = {};
+ 			$scope.hostingPlans[0] = {
+ 					id:0, 
+ 					clientId:$routeParams.clientId, 
+ 					notes:'New Record', 
+ 					levelId:"None Set Yet", 
+ 					backuplocation1: 'SERVER01:/var/www/example', 
+ 					backuplocation2: 'SERVER01:/var/www/example'}
+ 				
+ 		}
+ 	});
+
 	$scope.saveHosting = function() {
-		if(this.plan.id === 0) {
-			$http.post('api/v3/hostings', this.plan).success(function(results){
-				$scope.hostingplans[0] = results;
-			});
-
+		if(this.plan.id > 0) {
+			Hosting.apiSend.update({id:this.plan.id}, this.plan, function (res) { 
+			});			
+			//$http.put('api/v3/hostings/' + this.plan.id, this.plan).success(function(results){
+			//});
 		} else {
-			$http.put('api/v3/hostings/' + this.plan.id, this.plan).success(function(results){
+			Hosting.apiSend.save({}, this.plan, function(results){
+				$scope.hostingPlans[0] = results; //Update form ID so it now has one
 			});
 		}
-
-	}	
-
-	$http.get('api/v3/hostings/' + $routeParams.clientId).success(function(data) {
-	$scope.hostingplans = data;
-		if($scope.hostingplans.length == 0) {
-			var hostingplans = {};
-			$scope.hostingplans[0] = { id:0, clientId:$routeParams.clientId, notes:'New Record', levelId:"None Set Yet", backuplocation1: 'SERVER01:/var/www/example', backuplocation2: 'SERVER01:/var/www/example'};
-		}
-	});
+	}
 }
+HostingDetails.$inject = ['Hosting', '$routeParams', '$location', '$scope'];
 
 
 function PeopleList(People, $location, $scope) {
-  // $http.get('api/v3/person').success(function(data) {
-  //   $scope.peopleList = data;
-  // });
 
 	$scope.peopleList = People.api.query();
 
@@ -76,7 +78,7 @@ function PeopleList(People, $location, $scope) {
 	}
 }
 //@todo look at why this extra call
-PeopleList.$inject = ['People', '$location', '$scope'];
+PeopleList.$inject = ['People', '$routeParams', '$location', '$scope'];
 
 
 function PersonDetails(People, $routeParams, $location, $scope) {

@@ -4,9 +4,9 @@
 	    <input class="input-small search-query" type="text" ng-model="query"  placeholder="Client Name..">
 	</form>
 
-	<ul class="nav nav-tabs nav-stacked" ng-controller='ClientList'>
+	<ul id="clients" class="nav nav-tabs nav-stacked" ng-controller='ClientList'>
 		<li ng-repeat="client in clientList | filter:query" >
-			<a href="#/clients/{{client.clientId}}" class="ng-click">{{client.clientName}}</a>
+			<a id="client-{{client.clientId}}" href="#/clients/{{client.clientId}}" class="ng-click">{{client.clientName}}</a>
 		</li>
 	</ul>
 </div>

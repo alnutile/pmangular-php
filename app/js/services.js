@@ -41,8 +41,12 @@ angular.module('myApp.services', ['ngResource']).
         return {
         	//the resource provider interacting with the PHP backend
 	        api: 
-				$resource('api/v3/client/:clientId', {}, {
+				$resource('api/v3/hostings/:clientId', {}, {
 			        update: {method:'PUT'}
+				}),
+			apiSend: 
+				$resource('api/v3/hostings/:id', {}, {
+					update: {method:'PUT'}
 				}),
 			/*
 			* A generic function that can be called to emit an event on one ctrl that can be handled by another ctrl.
@@ -51,7 +55,6 @@ angular.module('myApp.services', ['ngResource']).
 			broadcastChange: function(){
 				$rootScope.$broadcast('handleBroadcast');
 			}
-
 		}
 	}])
 

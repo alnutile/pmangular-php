@@ -1,45 +1,84 @@
 'use strict';
 
 /* http://docs.angularjs.org/guide/dev_guide.e2e-testing */
+/* test is at http://localhost/pmangular/test/e2e/runner.html */
+/* this is after running scripts/e2e-test.sh */
 
-describe('my app', function() {
+describe('PMAngular App', function() {
 
-  beforeEach(function() {
+  it('should automatically redirect to /dash when location hash/fragment is empty', function() {
     browser().navigateTo('../../app/index.html');
+    expect(browser().location().url()).toBe("/dash");
   });
 
-
-  it('should automatically redirect to /view1 when location hash/fragment is empty', function() {
-    expect(browser().location().url()).toBe("/view1");
-  });
-
-
-  describe('view1', function() {
+  describe('People List View', function() {
 
     beforeEach(function() {
-      browser().navigateTo('#/view1');
+      browser().navigateTo('../../app/index.html#/people');
     });
 
 
-    it('should render view1 when user navigates to /view1', function() {
-      expect(element('[ng-view] p:first').text()).
-        toMatch(/partial for view 1/);
+    it('should render people list when user navigates to /people', function() {
+      expect(repeater('ul#people li').count()).toBeGreaterThan(2);
+    
+      input('query').enter('Alfred');
+      expect(repeater('ul#people li').count()).toBe(1);
+
+      input('query').enter('Bob the builder');
+      expect(repeater('ul#people li').count()).toBe(0);
+    });
+  }); //End people list view
+
+  describe('Person Detail View', function(){
+    beforeEach(function() {
+      browser().navigateTo('../../app/index.html#/people/2');
     });
 
-  });
+    it('should render a person and their details', function(){
+      expect(binding('personDetails.fname')).toBe('Alfred');
+    });
+  }); //end person details
 
 
-  describe('view2', function() {
+  describe('Client List View', function() {
 
     beforeEach(function() {
-      browser().navigateTo('#/view2');
+      browser().navigateTo('../../app/index.html#/clients');
     });
 
 
-    it('should render view2 when user navigates to /view2', function() {
-      expect(element('[ng-view] p:first').text()).
-        toMatch(/partial for view 2/);
+    it('should render client list when user navigates to /clients', function() {
+      expect(repeater('ul#clients li').count()).toBeGreaterThan(2);
+    
+      input('query').enter('BioScale');
+      expect(repeater('ul#clients li').count()).toBe(1);
+
+      input('query').enter('Bob the builder');
+      expect(repeater('ul#clients li').count()).toBe(0);
+    });
+  }); //End client list view
+
+  describe('Client Detail View', function(){
+    beforeEach(function() {
+      browser().navigateTo('../../app/index.html#/clients/1');
     });
 
-  });
-});
+    it('should render a client and their details', function(){
+      expect(binding('clientDetails.clientName')).toBe('BioScale');
+    });
+
+    it('it should update the user name and list', function(){
+      expect(element('a#client-1').text()).toBe('BioScale');
+      // element('#clientName').val('test update');
+      // expect(element('#clientName').val()).toBe('test update');
+      // element('#save-1').click();
+      // expect(element('a#client-1').text()).toBe('test update');
+      // element('#clientName').val('BioScale');
+      // element('#save-1').click();
+      // expect(element('a#client-1').text()).toBe('BioScale');
+      
+    });
+
+  }); //end person details
+
+}); //End tests
