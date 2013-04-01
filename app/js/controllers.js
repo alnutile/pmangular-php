@@ -70,7 +70,7 @@ function PeopleList(People, $location, $scope) {
 
     $scope.$on('handleBroadcast', function() {
         $scope.peopleList = People.api.query(); 
-    });   
+    });
 
 	$scope.clickedName = function(personList, index) {
 		var personClicked = $scope.personClicked = [];
@@ -78,7 +78,7 @@ function PeopleList(People, $location, $scope) {
 	}
 }
 //@todo look at why this extra call
-PeopleList.$inject = ['People', '$routeParams', '$location', '$scope'];
+PeopleList.$inject = ['People', '$location', '$scope'];
 
 
 function PersonDetails(People, $routeParams, $location, $scope) {

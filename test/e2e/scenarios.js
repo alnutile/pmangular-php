@@ -39,7 +39,6 @@ describe('PMAngular App', function() {
     });
   }); //end person details
 
-
   describe('Client List View', function() {
 
     beforeEach(function() {
@@ -79,6 +78,36 @@ describe('PMAngular App', function() {
       
     });
 
-  }); //end person details
+  }); //end client details
+
+  describe('Hosting List View', function() {
+
+    beforeEach(function() {
+      browser().navigateTo('../../app/index.html#/hostings');
+    });
+
+
+    it('should render hostings list when user navigates to /hostings', function() {
+      expect(repeater('ul#hostingList li').count()).toBeGreaterThan(2);
+    
+      input('query').enter('BioScale');
+      expect(repeater('ul#hostingList li').count()).toBe(1);
+
+      input('query').enter('Bob the builder');
+      expect(repeater('ul#hostingList li').count()).toBe(0);
+    });
+  }); //End Hostings list view
+
+  describe('Hosting Details View', function() {
+
+    beforeEach(function() {
+      browser().navigateTo('../../app/index.html#/hostings/1');
+    });
+
+    it('should render hostings detials view for BioScale who have 2', function() {
+      expect(repeater('.accordion-group').count()).toBe(2);
+      expect(element('input#client-id-5').val()).toBe("1");
+    });
+  }); //End Hostings Details view
 
 }); //End tests

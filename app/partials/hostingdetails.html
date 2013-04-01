@@ -21,13 +21,13 @@
 		      		<div class="accordion-inner">
 		        		<form class="form-horizontal">
 								<label for="client-id">Client ID:</label>
-									<input ng-model="plan.clientId" type="text" class="span2" id="client-id" name="client-id" disabled/>
+									<input ng-model="plan.clientId" type="text" class="span2" id="client-id-{{plan.id}}" name="client-id" disabled/>
 									<p class="help-block">Stored Client ID</p>
 									<label for="record-id">Record ID:</label>
-									<input ng-model="plan.id" type="text" class="span2" id="record-id" name="record-id" disabled/>
+									<input ng-model="plan.id" type="text" class="span2" id="record-id-{{plan.id}}" name="record-id" disabled/>
 									<p class="help-block">Stored Record ID</p>
 									<label  for="level-id">Level(s):</label>
-									<input ng-model="plan.levelId" type="text" class="span6 typeahead" id="level-id" name="level-id" required/>
+									<input ng-model="plan.levelId" type="text" class="span6 typeahead" id="level-id-{{plan.id}}" name="level-id" required/>
 									<ul class="typeahead dropdown-menu" style="top: 40px; left: 190px; display: none;">
 										<li data-value="1"><a href='#'>Level 1</a></li>
 										<li data-value="2"><a href='#'>Level 2</a></li>
@@ -35,13 +35,13 @@
 									</ul>
 									<p class="help-block">This is the present level of the client account for hosting. eg Rackspace Level 1</p>
 									<label for="backuplocation1">Backup Location 1:</label>
-									<input ng-model="plan.backuplocation1" type="text" class="span6" id="backuplocation1" name="backuplocation1"/>
+									<input ng-model="plan.backuplocation1" type="text" class="span6" id="backuplocation1-{{plan.id}}" name="backuplocation1"/>
 									<p class="help-block">eg Server01:/var/www/xyz</p>
 									<label for="backuplocation1">Backup Location 2:</label>
-									<input ng-model="plan.backuplocation1" type="text" class="span6" id="backuplocation2" name="backuplocation2"/>
+									<input ng-model="plan.backuplocation1" type="text" class="span6" id="backuplocation2-{{plan.id}}" name="backuplocation2"/>
 									<p class="help-block">eg Server01:/var/www/xyz</p>
 									<label for="notes">Notes:</label>
-									<textarea ng-model="plan.notes" name="notes" class="span5" id="notes" rows="3" style="width: 500px; height: 197px;"></textarea>
+									<textarea ng-model="plan.notes" name="notes" class="span5" id="notes-{{plan.id}}" rows="3" style="width: 500px; height: 197px;"></textarea>
 								<div class="form-actions">
 									<button ng-click="saveHosting()" type="save" class="save btn-primary" id="save-{{plan.id}}">Save</button>
 									<button type="delete" class="delete btn btn-danger">Delete</button>
