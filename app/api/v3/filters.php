@@ -47,7 +47,7 @@ function getPeopleData(){
 
 
 function getProjects(){
-	$sql = "SELECT p.id, p.name, clientName FROM projects p 
+	$sql = "SELECT p.id, CONCAT_WS(' - ', p.name, clientName) as name, clientName FROM projects p 
 	LEFT JOIN client c ON c.id = p.clientId";
 	try {
 		$db = getConnection();

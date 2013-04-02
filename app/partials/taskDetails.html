@@ -1,0 +1,69 @@
+
+<div data-ng-include data-src="'partials/taskList.html'"></div>
+
+<div class="span5">
+
+	<div class="alert alert-success">
+	  Task Ready for you to edit!
+	</div>
+		<!--start accordion-->
+		{{taskDetails}}
+		<div>
+				<div class="alert alert-message">
+						Edit Details for Task #{{taskDetails.id}} "{{taskDetails.name}}""
+				</div>
+			<div>
+				<form id="personForm" class="form-horizontal">
+							<input ng-model="taskDetails.id" type="hidden" class="span2" disabled/>
+
+							<label>Drupal Nid #:</label>
+							<input ng-model="taskDetails.drupalId" type="text" class="span2" disabled/>
+
+							<label>Task Title:</label>
+							<input ng-model="taskDetails.name" type="text" class="span12"/>
+
+							<label>Bring up in Meeting:
+								<input ng-model="taskDetails.meeting" type="checkbox" ng-true-value="1" ng-false-value="0"/>
+							</label>
+
+							<label>Billable:
+								<input ng-model="taskDetails.billable" ng-true-value="1" ng-false-value="0" type="checkbox"/>
+							</label>
+
+							<label>Due:</label>
+							<input ng-model="taskDetails.due" type="date"/>
+							
+							<label>Created:</label>
+							<input ng-model="taskDetails.created" type="date" disabled/>
+
+							<label>Assigned:</label>
+							<input ng-model="taskDetails.assigned" type="text" class="span6"/>
+
+							<label>Notify:</label>
+							<input ng-model="taskDetails.notify" type="text" class="span6"/>
+
+							<label>Project:</label>
+							<select class="span12" ng-model="taskDetails.project_id" multiple ng-options="p.id as p.name for p in taskDetails.taskHelpers.projects"></select>
+
+							<label>Expected Time:</label>
+							<input ng-model="taskDetails.expected_time" type="text" class="span2"/>
+
+							<label>Actual Time:</label>
+							<input ng-model="taskDetails.actual_time" type="text" class="span2"/>
+
+							<label for="notes">Notes:</label>
+							<textarea ng-model="taskDetails.notes" name="notes" class="span5" id="notes" rows="3" style="width: 500px; height: 197px;">
+							</textarea>
+
+						<div class="form-actions">
+							<button ng-click="saveTask()" type="save" class="save btn-primary" id="save-{{taskDetails.id}}">Save</button>
+							<button type="delete" class="delete btn btn-danger">Delete</button>
+						</div>
+		        </form>
+			</div>
+		</div>
+		<!--end accordion-->
+</div>
+
+
+

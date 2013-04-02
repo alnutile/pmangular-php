@@ -83,7 +83,21 @@ function getTasks() {
 	}
 }
 
-
+function getTask($id) {
+	error_log("Looking for task {$id}", 3, '/var/tmp/pmangular.log');
+	$sql = "SELECT * FROM tasks WHERE id=:id";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		$data = $stmt->fetchObject();  
+		$db = null;
+		echo json_encode($data); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
 
 function getTasksByStatus($id) {
 	//What no parmBing?

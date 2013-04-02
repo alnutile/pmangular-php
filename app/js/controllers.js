@@ -142,7 +142,6 @@ function TaskList(TaskByStatus, $location, $scope, $http) {
 	//at the submit level to deal with
 	//the need for the other fields
 	$scope.$watch('taskform.statuslist', function(status){
-		console.log($scope.taskform);
 		if($scope.taskform.posted != 1) {
 			$scope.taskList = TaskByStatus.api.query({id:status});
 		}
@@ -159,3 +158,42 @@ function TaskList(TaskByStatus, $location, $scope, $http) {
 //@todo look at why this extra call
 TaskList.$inject = ['TaskByStatus', '$location', '$scope', '$http'];
 
+function TaskDetails(TaskDetails, $routeParams, $location, $scope, $filter, $http) {
+
+	var defaultDate = $filter('datedefaults');
+	var angDate = $filter('date');
+	$scope.taskDetails = TaskDetails.api.get({id: $routeParams.taskId}, function(data){
+		if($scope.taskDetails.due) {
+			var dueDate = defaultDate($scope.taskDetails.due);
+			var dueDate = angDate(dueDate, 'y-MM-dd');
+			$scope.taskDetails.due = dueDate;
+		};
+
+		$http.get('api/v3/filter').success(function(data){	
+			$scope.taskDetails.taskHelpers = data;
+			console.log($scope.taskDetails.taskHelpers.projects);
+			var projectId = $scope.taskDetails.project_id;
+			$scope.taskDetails.project_id = $scope.taskDetails.taskHelpers.projects[projectId];
+		});
+
+		var created = defaultDate($scope.taskDetails.created);
+		$scope.taskDetails.created = angDate(created, 'y-MM-dd');
+
+
+	});
+	
+	$scope.saveTask = function() {
+		//console.log($scope.taskDetails["billable"]);
+		// if($scope.taskDetails.id > 0) {
+		// 	TaskDetails.api.update({id:$scope.taskDetails.id}, $scope.taskDetails, function (res) { 
+		// 		TaskDetails.broadcastChange();
+		// 	});
+		// } else {
+		// 	TaskDetails.api.save({}, $scope.taskDetails, function(res){
+		// 		TaskDetails.broadcastChange();
+		// 	});
+		// }
+	}
+}
+
+TaskDetails.$inject = ['TaskDetails', '$routeParams', '$location', '$scope', '$filter', '$http'];

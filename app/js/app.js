@@ -20,7 +20,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives'])
 
     /*Task Service*/
     $routeProvider.when('/task', {templateUrl: 'partials/taskList.html'});
-    //$routeProvider.when('/task/:id', {templateUrl: 'partials/taskDetails.html', controller: taskDetails});
+    $routeProvider.when('/task/:taskId', {templateUrl: 'partials/taskDetails.html', controller: TaskDetails});
 
 
     $routeProvider.otherwise({redirectTo: '/dash'});
