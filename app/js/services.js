@@ -56,5 +56,56 @@ angular.module('myApp.services', ['ngResource']).
 				$rootScope.$broadcast('handleBroadcast');
 			}
 		}
+	}]).    
+	factory('Task', ['$resource', '$http', '$rootScope', function($resource, $http, $rootScope){
+
+        return {
+        	//the resource provider interacting with the PHP backend
+	        api: 
+				$resource('api/v3/task/:id', {}, {
+			        update: {method:'PUT'}
+				}),
+			/*
+			* A generic function that can be called to emit an event on one ctrl that can be handled by another ctrl.
+			* The WineDetailCtrl emits it on each save, update or delete request, so that the WineListCtrl can react and update itself.	
+			*/
+			broadcastChange: function(){
+				$rootScope.$broadcast('handleBroadcast');
+			}
+		}
+	}]).    
+	factory('Filter', ['$resource', '$http', '$rootScope', function($resource, $http, $rootScope){
+        return {
+        	//the resource provider interacting with the PHP backend
+	        api: 
+				$resource('api/v3/filter/:id', {}, {
+			        update: {method:'PUT'}
+				}),
+			/*
+			* A generic function that can be called to emit an event on one ctrl that can be handled by another ctrl.
+			* The WineDetailCtrl emits it on each save, update or delete request, so that the WineListCtrl can react and update itself.	
+			*/
+			broadcastChange: function(){
+				$rootScope.$broadcast('handleBroadcast');
+			}
+
+		}
+	}]).
+	factory('TaskByStatus', ['$resource', '$http', '$rootScope', function($resource, $http, $rootScope){
+
+        return {
+        	//the resource provider interacting with the PHP backend
+	        api: 
+				$resource('api/v3/task/status/:id', {}, {
+			        update: {method:'PUT'}
+				}),
+			/*
+			* A generic function that can be called to emit an event on one ctrl that can be handled by another ctrl.
+			* The WineDetailCtrl emits it on each save, update or delete request, so that the WineListCtrl can react and update itself.	
+			*/
+			broadcastChange: function(){
+				$rootScope.$broadcast('handleBroadcast');
+			}
+		}
 	}])
 

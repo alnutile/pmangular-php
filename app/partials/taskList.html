@@ -1,0 +1,48 @@
+<div class="span5" ng-controller='TaskList'>
+
+	<form ng-model="taskform.$">
+			      				
+		<h4>Quick Filters</h4>
+		<div class="controls controls-row">
+			<input ng-model="taskform.text" class="span5"  class="input-small" type="text"  placeholder="Words Here..">
+			<select class="span6" ng-model="taskform.statuslist" multiple ng-options="t.id as t.name for t in filters.taskStatus"></select>
+		</div>
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse1">
+					Slower Filters
+				</a>
+			</div>
+			<div id="collapse1" class="accordion-body collapse">
+	      		<div class="accordion-inner">
+	      			<select class="span6" ng-model="taskform.assigned" multiple ng-options="t.id as t.fname for t in filters.assigned"></select>
+	      			
+	      			<label>Start and End - Due Date Range</label>
+					<input class="span6" ng-model="taskform.startdate" type="date">
+					<input class="span6" ng-model="taskform.enddate" type="date">
+
+					<label>Bring Up in Meeting</label>
+					<label class="checkbox">
+					  <input ng-mode="bringup" type="checkbox">Bring Up in Meeting
+					</label>					
+					<label>Related Project</label>
+	      			<input type="submit"  ng-click="filtersOnSubmit()">
+	      		</div>
+	      	</div>
+	    </div>
+	</form>
+
+	<table id="taskList" class="table table-hover table-bordered">
+		<tr class="row-status-{{task.status}}" ng-repeat="task in taskList | filter:taskform.text" >	
+			<td>
+				#{{task.id}}
+			</td>
+			<td>
+				<a href="#/task/{{task.id}}">{{task.name}} {{task.status}}</a>
+			</td>
+			<td>
+				{{ task.due | datefilter | date:'MM/d/y'}}
+			</td>
+		</tr>
+	</table>
+</div>

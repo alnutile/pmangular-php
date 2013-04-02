@@ -7,9 +7,19 @@ function tasksImport(){
         //1. Find all tasks in drupal
         //2. See if it exists
         //3. The pull in all the external relations for that task
-	$sql = "SELECT nid, title, uid, created, body_value as body
+	$sql = "SELECT 
+				nid, 
+				title, 
+				uid, 
+				created, 
+				body_value as body, 
+				taskStatus.field_status_tid as statusId,
+				statusName.name as statusName
                 FROM node 
-                LEFT JOIN field_data_body body ON body.entity_id = node.nid WHERE type LIKE 'task' LIMIT 10";
+                LEFT JOIN field_data_body body ON body.entity_id = node.nid 
+				LEFT JOIN field_data_field_status taskStatus ON taskStatus.entity_id = node.nid 
+                LEFT JOIN taxonomy_term_data statusName on statusName.tid =  taskStatus.field_status_tid
+                WHERE type LIKE 'task' LIMIT 100";
 	try {
 		$db = getConnectionMigrate();
 		$stmt = $db->query($sql);  
@@ -76,32 +86,87 @@ function migrateCompareTasks($newSystem, $drupalRecord){
  **/
 
 function migrateInsertTask($drupalRecord){
+
+	//Get Task Status if it exists
+	$statusId = migration_tasks_status($drupalRecord);
+
 	$sql = "INSERT INTO tasks
                     (id, drupalId, project_id, name, assigned, notify, notes, created, due, expected_time, status, meeting, actual_time, billable)
                         VALUES
-                    (NULL, :drupalId, :project_id, :name, NULL, NULL, :notes, :created, NULL, NULL, NULL, NULL, NULL, NULL)";
+                    (NULL, :drupalId, :project_id, :name, NULL, NULL, :notes, :created, NULL, NULL, :status, NULL, NULL, NULL)";
+	
+
 	//Need to see if there is a matching clientId
-        //@todo finish this line
-        $projectId = 0; //clientIdNewFromDrupalIdOld($drupalRecord->clientId);
-        try {
-		$db = getConnection();
-		$stmt = $db->prepare($sql);
-		$stmt->bindParam("name", $drupalRecord->title);
-		$stmt->bindParam("drupalId", $drupalRecord->nid);
-                $stmt->bindParam("project_id", $projectId);
-                $stmt->bindParam("notes", $drupalRecord->body);
-                $stmt->bindParam("created", $drupalRecord->created);
-		$stmt->execute();
-		$lastId = $db->lastInsertId();
-		$db = null;
-		error_log("migrateProject Task id: $lastId name: $drupalRecord->title \n", 
-		3, 
-		'/var/tmp/pmmigrate.log');
-		return $lastId;
+    //@todo finish this line
+    $projectId = 0; //clientIdNewFromDrupalIdOld($drupalRecord->clientId);
+    try {
+	$db = getConnection();
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam("name", $drupalRecord->title);
+	$stmt->bindParam("drupalId", $drupalRecord->nid);
+    $stmt->bindParam("project_id", $projectId);
+    $stmt->bindParam("notes", $drupalRecord->body);
+    $stmt->bindParam("created", $drupalRecord->created);
+    $stmt->bindParam("status", $statusId);
+	$stmt->execute();
+	$lastId = $db->lastInsertId();
+	$db = null;
+	error_log("migrateProject Task id: $lastId name: $drupalRecord->title \n", 
+	3, 
+	'/var/tmp/pmmigrate.log');
+	return $lastId;
 	} catch(PDOException $e) {
 		error_log($e->getMessage(), 3, '/var/tmp/pmbackend.log');
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
 
+
+function migration_tasks_status($drupalRecord) {
+	$drupalId = $drupalRecord->statusId;
+	$statusName = $drupalRecord->statusName;
+
+	$sql = "SELECT * FROM status WHERE drupalId = :drupalId";
+	
+	$dbExists = getConnection();
+	$queryExists = $dbExists->prepare($sql);
+	$queryExists->bindParam("drupalId", $drupalId);
+	$queryExists->execute();
+	$rowExists = $queryExists->fetchAll(PDO::FETCH_OBJ);
+	$dbExists = null;	
+
+	if(count($rowExists)) {
+		return $rowExists[0]->id;
+		//$compareRows = migrateCompareProject($rowExists[0], $drupalRecord);
+	} else {
+		$insert = migration_status_insert($drupalRecord);
+		return $insert;
+	}
+}
+
+
+function migration_status_insert($drupalRecord) {
+	//Get Task Status if it exists
+
+	$sql = "INSERT INTO status
+                    (id, drupalId, name)
+                        VALUES
+                    (NULL, :drupalId, :name)";
+    try {
+	$db = getConnection();
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam("name", $drupalRecord->statusName);
+	$stmt->bindParam("drupalId", $drupalRecord->statusId);
+	$stmt->execute();
+	$lastId = $db->lastInsertId();
+	$db = null;
+	error_log("migrateProject Status id: $lastId name: $drupalRecord->statusName \n", 
+	3, 
+	'/var/tmp/pmmigrate.log');
+	return $lastId;
+	} catch(PDOException $e) {
+		error_log($e->getMessage(), 3, '/var/tmp/pmbackend.log');
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
 

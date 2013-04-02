@@ -5,7 +5,7 @@
  * Setup basic endpoints
  * 
  * @todo make logging go into site parent folder not /var/tmp
- *    this means moving sit up one folder
+ *    this means moving site up one folder
  * 
  */
 
@@ -13,6 +13,8 @@ require 'Slim/Slim.php';
 require 'migration.php';
 require 'clients.php';
 require 'people.php';
+require 'tasks.php';
+require 'filters.php';
 
 require 'migration_projects.php';
 require 'migration_people.php';
@@ -28,6 +30,19 @@ $app->get('/client/search/:query', 'findClientByName');
 $app->post('/client', 'addClient');
 $app->put('/client/:id', 'updateClient');
 $app->delete('/client/:id',	'deleteClient');
+
+//Tasks URLs
+$app->get('/task', 'getTasks');
+$app->get('/task/status/:id', 'getTasksByStatus');
+$app->post('/task/filtered', 'getTasksByFilters');
+$app->get('/task/:id', 'getTask');
+$app->post('/task', 'addTasks');
+$app->put('/task/:id', 'updateTasks');
+$app->delete('/task/:id',	'deleteTasks');
+
+
+//Filters
+$app->get('/filter', 'getFilters');
 
 //People URLs
 $app->get('/person', 'getPeople');
@@ -52,6 +67,102 @@ $app->get('/migrate/features', 'featuresImport');
 $app->get('/migrate/tasks', 'tasksImport');
 
 $app->run();
+
+
+
+function getTasks() {
+	$sql = "select * FROM tasks ORDER BY id DESC";
+	try {
+		$db = getConnection();
+		$stmt = $db->query($sql);  
+		$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($data);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+
+
+function getTasksByStatus($id) {
+	//What no parmBing?
+	//It had touble dealing with an comma separated list.
+	//@todo come back and get this to work with bindParam
+	$id = mysql_real_escape_string($id);
+	$sql = "select id, drupalId, project_id, name, assigned, notify, created, due, expected_time, status, meeting, actual_time, billable  FROM tasks WHERE status IN($id) ORDER BY id DESC";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+		$stmt->execute();
+		$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($data);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+
+function getTasksByFilters() {
+	
+	$request = Slim::getInstance()->request();
+	$data = json_decode($request->getBody());
+	$test = print_r($data, 1);
+	error_log("Multiple Status {$test} /n", 3, '/var/tmp/pmangular.log');
+	$conditions = array();
+	//Assigned 
+	
+	if(is_array($data->assigned)) {
+		$assignedchosen = implode(',', $data->assigned);
+		$conditions[] = " assigned IN($assignedchosen) ";
+	} 
+
+	//Text if any
+	if(!empty($data->text)) {
+		$textchosen = $data->text;
+		$conditions[] = " ( name LIKE \"%$textchosen%\" OR notes LIKE \"%$textchosen%\" ) ";
+	} 
+
+	//Status 
+	if(!empty($data->statuslist)) {
+		$statusdchosen = (is_array($data->statuslist)) ? implode(',', $data->statuslist) : $data->statuslist;
+		$conditions[] = " status IN($statusdchosen) ";
+	} 
+
+	//Start Date [startdate] => 2013-04-02
+	if(!empty($data->startdate)) {
+		$startdate = strtotime($data->startdate);
+		if(!empty($data->enddate)) { 
+			$enddate = strtotime($data->enddate);
+		} else {
+			$enddate = $startdate;
+		}
+		$conditions[] = " ( due >= $startdate AND due <= $enddate ) ";
+	} 
+
+	if(count($conditions)) {
+		$conditions = implode(' AND ', $conditions);
+	}
+
+	$sql = "select id, drupalId, project_id, name, assigned, notify, notes, created, due, expected_time, status, meeting, actual_time, billable  
+	FROM tasks 
+	WHERE $conditions
+	ORDER BY id DESC";
+	error_log("Actual Query {$sql} /n", 3, '/var/tmp/pmangular.log');
+
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+		$stmt->execute();
+		$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($data);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
 
 
 function getHostings() {

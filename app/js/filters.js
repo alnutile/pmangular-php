@@ -2,9 +2,11 @@
 
 /* Filters */
 
-angular.module('myApp.filters', []).
-  filter('interpolate', ['version', function(version) {
-    return function(text) {
-      return String(text).replace(/\%VERSION\%/mg, version);
-    }
-  }]);
+angular.module('myApp.filters', []).filter('datefilter', function() {
+    return function(dateoutput) {
+      if(dateoutput > 1) {
+      	return dateoutput +'000';
+      }
+      //return (text == 2) ? text : text;
+    };
+  });

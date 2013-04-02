@@ -18,6 +18,10 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives'])
     $routeProvider.when('/people', {templateUrl: 'partials/peopleList.html'});
     $routeProvider.when('/people/:personId', {templateUrl: 'partials/peopleDetails.html', controller: PersonDetails});
 
+    /*Task Service*/
+    $routeProvider.when('/task', {templateUrl: 'partials/taskList.html'});
+    //$routeProvider.when('/task/:id', {templateUrl: 'partials/taskDetails.html', controller: taskDetails});
+
 
     $routeProvider.otherwise({redirectTo: '/dash'});
   }]);

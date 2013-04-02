@@ -99,3 +99,55 @@ function PersonDetails(People, $routeParams, $location, $scope) {
 }
 
 PersonDetails.$inject = ['People', '$routeParams', '$location', '$scope'];
+
+
+function FilterCtrl(Filter, $location, $scope) {
+
+	$scope.filterList = Filter.api.get();
+
+
+    $scope.$on('handleBroadcast', function() {
+        $scope.filterList = Filter.api.get(); 
+    });
+}
+//@todo look at why this extra call
+FilterCtrl.$inject = ['Filter', '$location', '$scope'];
+
+
+function TaskList(TaskByStatus, $location, $scope, $http) {
+
+	$scope.taskList = TaskByStatus.api.query({id:2});
+
+    $scope.$on('handleBroadcast', function() {
+        $scope.taskList = TaskByStatus.api.query({id:2}); 
+    });
+
+    var filters = [];
+	$http.get('api/v3/filter').success(function(data){
+		$scope.taskform = {};
+		$scope.filters = data;
+		$scope.taskform.assigned = '';
+		$scope.taskform.text = '';
+		$scope.taskform.startdate = '';
+		$scope.taskform.enddate = '';
+		$scope.taskform.statuslist = "2";
+		$scope.taskform.bringup = '';
+	});
+
+	//Removing this for now and doing it 
+	//at the submit level to deal with
+	//the need for the other fields
+	$scope.$watch('taskform.statuslist', function(status){
+		$scope.taskList = TaskByStatus.api.query({id:status});
+	});
+
+	$scope.filtersOnSubmit = function() {
+		$http.post('api/v3/task/filtered', $scope.taskform).success(function(data) {
+		    $scope.taskList = data;
+		});
+	}
+
+}
+//@todo look at why this extra call
+TaskList.$inject = ['TaskByStatus', '$location', '$scope', '$http'];
+
