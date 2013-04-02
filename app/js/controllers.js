@@ -115,6 +115,9 @@ FilterCtrl.$inject = ['Filter', '$location', '$scope'];
 
 
 function TaskList(TaskByStatus, $location, $scope, $http) {
+	
+	$scope.taskform = {};
+	$scope.taskform.posted = 0;
 
 	$scope.taskList = TaskByStatus.api.query({id:2});
 
@@ -123,8 +126,7 @@ function TaskList(TaskByStatus, $location, $scope, $http) {
     });
 
     var filters = [];
-	$http.get('api/v3/filter').success(function(data){
-		$scope.taskform = {};
+	$http.get('api/v3/filter').success(function(data){	
 		$scope.filters = data;
 		$scope.taskform.assigned = '';
 		$scope.taskform.text = '';
@@ -132,18 +134,24 @@ function TaskList(TaskByStatus, $location, $scope, $http) {
 		$scope.taskform.enddate = '';
 		$scope.taskform.statuslist = "2";
 		$scope.taskform.bringup = '';
+		$scope.taskform.posted = 0;
+		$scope.taskform.projects = '';
 	});
 
 	//Removing this for now and doing it 
 	//at the submit level to deal with
 	//the need for the other fields
 	$scope.$watch('taskform.statuslist', function(status){
-		$scope.taskList = TaskByStatus.api.query({id:status});
+		console.log($scope.taskform);
+		if($scope.taskform.posted != 1) {
+			$scope.taskList = TaskByStatus.api.query({id:status});
+		}
 	});
 
 	$scope.filtersOnSubmit = function() {
 		$http.post('api/v3/task/filtered', $scope.taskform).success(function(data) {
 		    $scope.taskList = data;
+		    $scope.taskform.posted = 1;
 		});
 	}
 

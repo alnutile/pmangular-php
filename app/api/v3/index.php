@@ -141,6 +141,24 @@ function getTasksByFilters() {
 		$conditions[] = " ( due >= $startdate AND due <= $enddate ) ";
 	} 
 
+	//Bring up in meeting
+	if(!empty($data->bringup)) {
+		$bringup = $data->bringup;
+		$conditions[] = " meeting = 1 ";
+	} 
+
+	//Projects
+	if(is_array($data->projects)) {
+		//This is an object due to the 
+		//select grouping I am doing, I think
+		foreach($data->projects as $key){
+			$projects[] = $key->id;
+		}
+		$projectschosen = implode(',', $projects);
+		$conditions[] = " project_id IN($projectschosen) ";
+	} 
+
+
 	if(count($conditions)) {
 		$conditions = implode(' AND ', $conditions);
 	}

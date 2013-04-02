@@ -23,10 +23,18 @@
 
 					<label>Bring Up in Meeting</label>
 					<label class="checkbox">
-					  <input ng-mode="bringup" type="checkbox">Bring Up in Meeting
+					  <input ng-model="taskform.bringup" type="checkbox">Bring Up in Meeting
 					</label>					
 					<label>Related Project</label>
-	      			<input type="submit"  ng-click="filtersOnSubmit()">
+					<select class="span12" ng-model="taskform.projects" multiple ng-options="p.name group by p.clientName for p in filters.projects"></select>
+
+					<div class="form-actions">
+						<input type="hidden"  ng-model="taskform.posted">
+	      				<input type="submit" class="save btn-primary" ng-click="filtersOnSubmit()">
+					</div>
+
+						
+	      		
 	      		</div>
 	      	</div>
 	    </div>
