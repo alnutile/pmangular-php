@@ -4,7 +4,7 @@
 // Declare app level module which depends on filters, and services
 angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives']).
   config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/dash', {templateUrl: 'partials/dash.html', controller: ClientList});
+    $routeProvider.when('/dash', {templateUrl: 'partials/dash.html', controller: DashWidget});
 
     /*Client Service*/
     $routeProvider.when('/clients', {templateUrl: 'partials/clientsList.html'});
@@ -22,6 +22,11 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives'])
     $routeProvider.when('/task', {templateUrl: 'partials/taskList.html'});
     $routeProvider.when('/task/:taskId', {templateUrl: 'partials/taskDetails.html', controller: TaskDetails});
 
-
-    $routeProvider.otherwise({redirectTo: '/dash'});
-  }]);
+    $routeProvider.otherwise({redirectTo: '/dash', controller: DashWidget});
+  }]).run(['$rootScope', '$location', function($rootScope, $location){
+   var path = function() { return $location.path();};
+   $rootScope.$watch(path, function(newVal, oldVal){
+     var newVal = newVal.split('/');
+     $rootScope.activetab = newVal[1];
+   });
+}]);;

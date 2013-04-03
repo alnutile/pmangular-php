@@ -15,4 +15,19 @@ filter('datefilter', function() {
       	return dateoutput +'000';
       }
     };
+  }).filter('levelfilter', function() {
+    return function(level) {
+      if(level > 0) {
+        if(level == 1) {
+          var level = 'low';
+        } else if(level == 2) {
+          var level = 'medium';
+        } else if(level == 3) {
+          var level = 'high';
+        } else if(level == 4) {
+          var level = 'urgent';
+        }
+        return level;
+      }
+    };
   });

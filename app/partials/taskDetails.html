@@ -1,13 +1,12 @@
 
 <div data-ng-include data-src="'partials/taskList.html'"></div>
 
-<div class="span5">
+<div class="span6">
 
 	<div class="alert alert-success">
 	  Task Ready for you to edit!
 	</div>
-		<!--start accordion-->
-		{{taskDetails}}
+
 		<div>
 				<div class="alert alert-message">
 						Edit Details for Task #{{taskDetails.id}} "{{taskDetails.name}}""
@@ -40,10 +39,10 @@
 							<input ng-model="taskDetails.assigned" type="text" class="span6"/>
 
 							<label>Notify:</label>
-							<input ng-model="taskDetails.notify" type="text" class="span6"/>
-
+							<select class="span12" ng-model="taskDetails.notify" multiple ng-options="p.id as p.fname for p in taskDetails.taskHelpers.people"></select>
+							
 							<label>Project:</label>
-							<select class="span12" ng-model="taskDetails.project_id" multiple ng-options="p.id as p.name for p in taskDetails.taskHelpers.projects"></select>
+							<select class="span12 chzn-select" data-rel="chosen" ng-model="taskDetails.project_id" ng-options="p.id as p.name for p in taskDetails.taskHelpers.projects"></select>
 
 							<label>Expected Time:</label>
 							<input ng-model="taskDetails.expected_time" type="text" class="span2"/>
@@ -62,7 +61,7 @@
 		        </form>
 			</div>
 		</div>
-		<!--end accordion-->
+		<pre>{{taskDetails}}</pre>
 </div>
 
 

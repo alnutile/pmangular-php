@@ -1,4 +1,4 @@
-<div class="span4" ng-controller='TaskList'>
+<div class="span6" ng-controller='TaskList'>
 
 	<form ng-model="taskform.$">
 			      				
@@ -15,6 +15,7 @@
 			</div>
 			<div id="collapse1" class="accordion-body collapse">
 	      		<div class="accordion-inner">
+	      			<label>Assigned:</label>
 	      			<select class="span6" ng-model="taskform.assigned" multiple ng-options="t.id as t.fname for t in filters.assigned"></select>
 	      			
 	      			<label>Start and End - Due Date Range</label>
@@ -26,31 +27,27 @@
 					  <input ng-model="taskform.bringup" type="checkbox">Bring Up in Meeting
 					</label>					
 					<label>Related Project</label>
-					<select class="span12" ng-model="taskform.projects" multiple ng-options="p.name group by p.clientName for p in filters.projects"></select>
+					<select multiple data-placeholder="Choose a project..." class="span12 chzn-select" ng-model="taskform.projects"  ng-options="p.name group by p.clientName for p in filters.projects"></select>
 
 					<div class="form-actions">
 						<input type="hidden"  ng-model="taskform.posted">
 	      				<input type="submit" class="save btn-primary" ng-click="filtersOnSubmit()">
-					</div>
-
-						
-	      		
+					</div>	      
 	      		</div>
 	      	</div>
 	    </div>
 	</form>
-
-	<table id="taskList" class="table table-hover table-bordered">
-		<tr class="row-status-{{task.status}}" ng-repeat="task in taskList | filter:taskform.text" >	
-			<td>
-				#{{task.id}}
-			</td>
-			<td>
-				<a href="#/task/{{task.id}}">{{task.name}} {{task.status}}</a>
-			</td>
-			<td>
-				{{ task.due | datefilter | date:'MM/d/y'}}
-			</td>
-		</tr>
-	</table>
+	<h1>Tasks</h1>
+	<ul class="messagesList">
+		<li><span class="title-label span10"><h4>title</h4></span> <span class="span2 created-label"><h4>created</h4></span></li>
+		<li ng-repeat="task in taskList | filter:taskform.text">
+			<span class="title">
+				<span class="label {{ task.level | levelfilter }}">{{ task.level | levelfilter }}</span>
+				#{{task.id}} <a href="#/task/{{task.id}}">{{task.name}}</a>
+			</span> 
+			<span class="date">
+				{{ task.created | datefilter | date:'M-d-y hh:mma'}}
+			</span>
+		</li>
+	</ul>
 </div>

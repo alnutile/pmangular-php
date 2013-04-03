@@ -1,8 +1,43 @@
-<ul>
-	<li><a ng-click href='#/dash'>Dashboard</a></li>
-	<li><a ng-click href='#/clients'>Clients</a></li>
-	<li><a ng-click href='#/hostings'>Hosting</a></li>
-	<li><a ng-click href='#/people'>People</a></li>
-	<li><a ng-click href='#/task'>Tasks</a></li>
-	<li>Projects</li>
+
+
+
+<ul class="nav nav-tabs nav-stacked main-menu">
+	<li ng-class="{active: activetab=='dash'}">
+		<a class="submenu"  ng-click href='#/dash'>
+			<i class="fa-icon-bar-chart"></i>
+			<span class="hidden-tablet">Dash</span>
+		</a>
+	</li>
+	<li ng-class="{active: activetab=='clients'}">
+		<a class="submenu" ng-click href='#/clients'>
+			<i class="fa-icon-eye-open"></i>
+			<span class="hidden-tablet">Clients</span>
+		</a>
+	</li>
+	<li ng-class="{active: activetab=='hostings'}">
+		<a class="submenu" ng-click href='#/hostings'>
+			<i class="fa-icon-hdd"></i>
+			<span class="hidden-tablet">Hosting</span>
+		</a>
+	</li>
+	<li ng-class="{active: activetab=='people'}">
+		<a class="submenu" ng-click href='#/people'>
+			<i class="fa-icon-group"></i>
+			<span class="hidden-tablet">People</span>
+		</a>
+	</li>
+	<li ng-class="{active: activetab=='task'}">
+		<a class="submenu" ng-click href='#/task'>
+			<i class="fa-icon-envelope"></i>
+			<span class="hidden-tablet">Tasks</span>
+		</a>
+	</li>
+	<li ng-class="{active: activetab=='project'}">
+		<a class="submenu" ng-click href='#/projects'>
+			<i class="fa-icon-folder-open"></i>
+			<span class="hidden-tablet">Projects</span>
+		</a>
+	</li>
 </ul>
+
+

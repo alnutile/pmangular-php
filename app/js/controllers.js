@@ -136,6 +136,7 @@ function TaskList(TaskByStatus, $location, $scope, $http) {
 		$scope.taskform.bringup = '';
 		$scope.taskform.posted = 0;
 		$scope.taskform.projects = '';
+		$scope.taskform.levels = '';
 	});
 
 	//Removing this for now and doing it 
@@ -172,9 +173,30 @@ function TaskDetails(TaskDetails, $routeParams, $location, $scope, $filter, $htt
 		$http.get('api/v3/filter').success(function(data){	
 			$scope.taskDetails.taskHelpers = data;
 			console.log($scope.taskDetails.taskHelpers.projects);
-			var projectId = $scope.taskDetails.project_id;
-			$scope.taskDetails.project_id = $scope.taskDetails.taskHelpers.projects[projectId];
+			//var projectId = $scope.taskDetails.project_id;
+			//$scope.taskDetails.project_id = $scope.taskDetails.taskHelpers.projects[projectId];
 		});
+
+		var taskId = $routeParams.taskId;
+		$http.get('api/v3/notify/bytask/' + taskId).success(function(data){
+			console.log(data);
+			if(data === 'false') {
+				data = '';
+			}
+			$scope.taskDetails.notify = data;
+			var notify = {};
+		});
+
+
+		$http.get('api/v3/assign/bytask/' + taskId).success(function(data){
+			console.log(data);
+			if(data === 'false') {
+				data = '';
+			}
+			$scope.taskDetails.notify = data;
+			var notify = {};
+		});
+
 
 		var created = defaultDate($scope.taskDetails.created);
 		$scope.taskDetails.created = angDate(created, 'y-MM-dd');
@@ -183,17 +205,48 @@ function TaskDetails(TaskDetails, $routeParams, $location, $scope, $filter, $htt
 	});
 	
 	$scope.saveTask = function() {
-		//console.log($scope.taskDetails["billable"]);
-		// if($scope.taskDetails.id > 0) {
-		// 	TaskDetails.api.update({id:$scope.taskDetails.id}, $scope.taskDetails, function (res) { 
-		// 		TaskDetails.broadcastChange();
-		// 	});
-		// } else {
-		// 	TaskDetails.api.save({}, $scope.taskDetails, function(res){
-		// 		TaskDetails.broadcastChange();
-		// 	});
-		// }
+		console.log($scope.taskDetails);
+		if($scope.taskDetails.id > 0) {
+			console.log('Time for update');
+			TaskDetails.api.update({id:$scope.taskDetails.id}, $scope.taskDetails, function (res) { 
+				TaskDetails.broadcastChange();
+			});
+		} else {
+			// TaskDetails.api.save({}, $scope.taskDetails, function(res){
+			// 	TaskDetails.broadcastChange();
+			// });
+		}
 	}
 }
 
 TaskDetails.$inject = ['TaskDetails', '$routeParams', '$location', '$scope', '$filter', '$http'];
+
+
+
+function DashWidget(TaskByStatus, $location, $scope, $http) {
+	var dash = {};
+	$scope.openTasks = TaskByStatus.api.query({id:2});
+	$scope.internal = TaskByStatus.api.query({id:3});
+	$scope.client = TaskByStatus.api.query({id:4});
+	// 		"opentasks":TaskByStatus.api.query({id:2}), 
+	// 		"internal":TaskByStatus.api.query({id:3}),
+	// 		"client":TaskByStatus.api.query({id:4}),
+	// 		"qadone":TaskByStatus.api.query({id:5})
+	// 	}];
+	// //Widget for comments
+
+	//Task Items Due today
+
+	//New Items (eg past day)
+
+	//Items assigned to you and !done
+
+	//Meeting and !done
+	$http({url: 'api/v3/task', method: "GET", params: {meeting:'1', data: self.data}}).success(function(data) {
+		   console.log(data);
+	});
+
+
+}
+//@todo look at why this extra call
+DashWidget.$inject = ['TaskByStatus', '$location', '$scope', '$http'];

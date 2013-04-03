@@ -37,8 +37,15 @@ $app->get('/task/status/:id', 'getTasksByStatus');
 $app->post('/task/filtered', 'getTasksByFilters');
 $app->get('/task/:id', 'getTask');
 $app->post('/task', 'addTasks');
-$app->put('/task/:id', 'updateTasks');
+$app->put('/task/:id', 'updateTask');
 $app->delete('/task/:id',	'deleteTasks');
+
+
+//Notify URLs
+$app->get('/notify/bytask/:id', 'getNotifyByTask');
+
+//Assign URLs
+$app->get('/assign/bytask/:id', 'getAssignByTask');
 
 
 //Filters
@@ -68,9 +75,11 @@ $app->get('/migrate/tasks', 'tasksImport');
 
 $app->run();
 
-
-
 function getTasks() {
+	$request = Slim::getInstance()->request();
+	$data = json_decode($request->getBody());
+	$request = print_r($data, 1);
+	error_log("Looking 2 for task {$request}", 3, '/var/tmp/pmangular.log');
 	$sql = "select * FROM tasks ORDER BY id DESC";
 	try {
 		$db = getConnection();
@@ -84,8 +93,8 @@ function getTasks() {
 }
 
 function getTask($id) {
-	error_log("Looking for task {$id}", 3, '/var/tmp/pmangular.log');
-	$sql = "SELECT * FROM tasks WHERE id=:id";
+	
+	$sql = "SELECT t.* FROM tasks t WHERE t.id=:id";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
@@ -104,7 +113,7 @@ function getTasksByStatus($id) {
 	//It had touble dealing with an comma separated list.
 	//@todo come back and get this to work with bindParam
 	$id = mysql_real_escape_string($id);
-	$sql = "select id, drupalId, project_id, name, assigned, notify, created, due, expected_time, status, meeting, actual_time, billable  FROM tasks WHERE status IN($id) ORDER BY id DESC";
+	$sql = "select id, drupalId, project_id, name, created, due, expected_time, status, meeting, actual_time, billable, level  FROM tasks WHERE status IN($id) ORDER BY id DESC";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);
@@ -117,20 +126,44 @@ function getTasksByStatus($id) {
 	}
 }
 
+function getAssignByTask($id) {
+	$sql = "SELECT * FROM assigned
+	WHERE taskId=:id";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($data); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function getNotifyByTask($id) {
+	$sql = "SELECT * FROM notify
+	WHERE taskId=:id";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($data); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
 
 function getTasksByFilters() {
 	
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$test = print_r($data, 1);
-	error_log("Multiple Status {$test} /n", 3, '/var/tmp/pmangular.log');
 	$conditions = array();
-	//Assigned 
-	
-	if(is_array($data->assigned)) {
-		$assignedchosen = implode(',', $data->assigned);
-		$conditions[] = " assigned IN($assignedchosen) ";
-	} 
 
 	//Text if any
 	if(!empty($data->text)) {
@@ -163,24 +196,45 @@ function getTasksByFilters() {
 
 	//Projects
 	if(is_array($data->projects)) {
+		$projectschosen = '';
+		$projects = array();
 		//This is an object due to the 
 		//select grouping I am doing, I think
 		foreach($data->projects as $key){
 			$projects[] = $key->id;
 		}
 		$projectschosen = implode(',', $projects);
-		$conditions[] = " project_id IN($projectschosen) ";
+		 if(!empty($projectschosen)) {
+		 	//@todo not sure why I need to do this last check
+		 	//	some kinda swap going on if no project 
+		 	//  selected versus selected
+		 	$conditions[] = " project_id IN($projectschosen) ";
+		 }
 	} 
 
+	//Assigned 
+	if(is_array($data->assigned)) {
+		$assignedchosen = implode(',', $data->assigned);
+		if(count($conditions)) {
+			$conditions = implode(' AND ', $conditions);
+		}
+		$sql = "select t.id, t.drupalId, t.project_id, t.name, a.people_id as assigned_person_id, notes, created, due, expected_time, status, meeting, actual_time, billable, level 
+		FROM tasks t
+		INNER JOIN assigned a ON a.taskId = t.id and a.people_id IN($assignedchosen) 
+		WHERE $conditions
+		GROUP BY t.id
+		ORDER BY id DESC";
+	} else {
+		if(count($conditions)) {
+			$conditions = implode(' AND ', $conditions);
+		}
+		$conditions = "WHERE $conditions ";
+		$sql = "select t.id, t.drupalId, t.project_id, t.name, notes, created, due, expected_time, status, meeting, actual_time, billable, level
+		FROM tasks t
+		$conditions 
+		ORDER BY id DESC";
+	} 
 
-	if(count($conditions)) {
-		$conditions = implode(' AND ', $conditions);
-	}
-
-	$sql = "select id, drupalId, project_id, name, assigned, notify, notes, created, due, expected_time, status, meeting, actual_time, billable  
-	FROM tasks 
-	WHERE $conditions
-	ORDER BY id DESC";
 	error_log("Actual Query {$sql} /n", 3, '/var/tmp/pmangular.log');
 
 	try {

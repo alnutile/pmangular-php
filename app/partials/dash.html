@@ -1,11 +1,71 @@
+<div class="span8">
+	<h1>The DashBoard</h1>
+	<div class="row-fluid">
+		<div class="box span4 noMargin" ontablet="span6" ondesktop="span4">
+			<div class="box-header">
+				<h2><i class="halflings-icon list"></i><span class="break"></span>Open Tasks</h2>
+			</div>
+			<div class="box-content" style="overflow-x: hidden; overflow-y: auto; max-height: 400px;">
+				<ul class="tickets">
+					<li class="ticket" ng-repeat="taskOpen in openTasks">
+						<a href="#/task/{{taskOpen.id}}">
+							<span class="header">
+								<span class="title">{{taskOpen.name}}</span>
+							</span>
+							<span class="content">
+								<span class="level {{ taskOpen.level | levelfilter }}"> {{ taskOpen.level | levelfilter }} </span>
+								<span class="number">[#{{taskOpen.id}}]</span>
+								<span class="date">{{ taskOpen.created | datefilter | date:'M-d-y hh:mma'}}</span>
+							</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 
-<div class="span2">
-<!--   <h4>Client List</h4>
+		<div class="box span4 noMargin" ontablet="span6" ondesktop="span4">
+			<div class="box-header">
+				<h2><i class="halflings-icon list"></i><span class="break"></span>Pending Internal Review</h2>
+			</div>
+			<div class="box-content" style="overflow-x: hidden; overflow-y: auto; max-height: 400px;">
+				<ul class="tickets">
+					<li class="ticket" ng-repeat="taskInternal in internal">
+						<a href="#/task/{{taskInternal.id}}">
+							<span class="header">
+								<span class="title">{{taskInternal.name}}</span>
+							</span>
+							<span class="content">
+								<span class="level {{ taskInternal.level | levelfilter }}"> {{ taskInternal.level | levelfilter }} </span>
+								<span class="number">[#{{taskInternal.id}}]</span>
+								<span class="date">{{ taskInternal.created | datefilter | date:'M-d-y hh:mma'}}</span>
+							</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 
-	<ul class="nav nav-tabs nav-stacked" ng-controller='ClientList'>
-		<li ng-repeat="client in clients | filter:query" >
-			<a href="#/client/{{client.clientId}}" class="ng-click">{{client.clientName}}</a>
-		</li>
-	</ul>
-</div> -->
-<div class="span8">The DashBoard</div>
+		<div class="box span4 noMargin" ontablet="span6" ondesktop="span4">
+			<div class="box-header">
+				<h2><i class="halflings-icon list"></i><span class="break"></span>Pending Client Review</h2>
+			</div>
+			<div class="box-content" style="overflow-x: hidden; overflow-y: auto; max-height: 400px;">
+				<ul class="tickets">
+					<li class="ticket" ng-repeat="taskItem in client">
+						<a href="#/task/{{taskItem.id}}">
+							<span class="header">
+								<span class="title">{{taskItem.name}}</span>
+							</span>
+							<span class="content">
+								<span class="level {{ taskItem.level | levelfilter }}"> {{ taskItem.level | levelfilter }} </span>
+								<span class="number">[#{{taskItem.id}}]</span>
+								<span class="date">{{ taskItem.created | datefilter | date:'M-d-y hh:mma'}}</span>
+							</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+	</div>
+</div>
