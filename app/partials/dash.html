@@ -1,5 +1,48 @@
-<div class="span8">
+<div class="span11">
 	<h1>The DashBoard</h1>
+
+		
+<!-- start row 1-->
+	<div class="row-fluid">
+		<div class="box span6 noMargin" ontablet="span6" ondesktop="span4">
+			<div class="box-header">
+				<h2><i class="halflings-icon list"></i><span class="break"></span>Search</h2>
+			</div>
+			<div class="box-content" style="overflow-x: hidden; overflow-y: hidden; min-height: 400px; max-height: 400px;">
+				<input type="text" ng-model="searchTerm"></input>
+				{{ searchAll() }}
+				<ul class="tickets">
+					<li class="ticket" ng-repeat="searchItem in searchResults">
+						<a href='#/{{searchItem.type}}/{{searchItem.id}}'>{{searchItem.name}} [{{searchItem.type}}]</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="box span6 noMargin" ontablet="span6" ondesktop="span4">
+			<div class="box-header">
+				<h2><i class="halflings-icon list"></i><span class="break"></span>Bring up in Meeting</h2>
+			</div>
+			<div class="box-content" style="overflow-x: hidden; overflow-y: auto; max-height: 400px;">
+				<ul class="tickets">
+					<li class="ticket" ng-repeat="taskItem in meeting">
+						<a href="#/task/{{taskItem.id}}">
+							<span class="header">
+								<span class="title">{{taskItem.name}}</span>
+							</span>
+							<span class="content">
+								<span class="level {{ taskItem.level | levelfilter }}"> {{ taskItem.level | levelfilter }} </span>
+								<span class="number">[#{{taskItem.id}}]</span>
+								<span class="date">{{ taskItem.created | datefilter | date:'M-d-y hh:mma'}}</span>
+							</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+<!--start row 2-->
 	<div class="row-fluid">
 		<div class="box span4 noMargin" ontablet="span6" ondesktop="span4">
 			<div class="box-header">
@@ -66,6 +109,8 @@
 				</ul>
 			</div>
 		</div>
-
 	</div>
+</div>
+<!--end row 2-->
+
 </div>

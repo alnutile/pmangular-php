@@ -23,6 +23,9 @@ require 'migration_tasks.php';
 
 $app = new Slim();
 
+//Search all
+$app->post('/searchall', 'searchAll');
+
 //Client URLs
 $app->get('/client', 'getClients');
 $app->get('/client/:id', 'getClient');
@@ -163,8 +166,9 @@ function getTasksByFilters() {
 	
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$conditions = array();
-
+	$conditions = '';
+	$test = print_r($data, 1);
+	error_log("Post request Filtered {$test} /n", 3, '/var/tmp/pmangular.log');
 	//Text if any
 	if(!empty($data->text)) {
 		$textchosen = $data->text;
@@ -195,7 +199,7 @@ function getTasksByFilters() {
 	} 
 
 	//Projects
-	if(is_array($data->projects)) {
+	if(isset($data->projects) && is_array($data->projects)) {
 		$projectschosen = '';
 		$projects = array();
 		//This is an object due to the 
@@ -212,8 +216,15 @@ function getTasksByFilters() {
 		 }
 	} 
 
+	//Meeting
+	if(isset($data->meeting)) {
+		$meeting = $data->meeting;
+		$conditions[] = " meeting = $meeting ";
+	}
+
+
 	//Assigned 
-	if(is_array($data->assigned)) {
+	if(isset($data->assigned) && is_array($data->assigned)) {
 		$assignedchosen = implode(',', $data->assigned);
 		if(count($conditions)) {
 			$conditions = implode(' AND ', $conditions);
@@ -224,18 +235,19 @@ function getTasksByFilters() {
 		WHERE $conditions
 		GROUP BY t.id
 		ORDER BY id DESC";
+		error_log("Query Filtered Assigned {$sql} /n", 3, '/var/tmp/pmangular.log');
 	} else {
-		if(count($conditions)) {
+		if(is_array($conditions) && count($conditions)) {
 			$conditions = implode(' AND ', $conditions);
+			$conditions = "WHERE $conditions ";
 		}
-		$conditions = "WHERE $conditions ";
+		
 		$sql = "select t.id, t.drupalId, t.project_id, t.name, notes, created, due, expected_time, status, meeting, actual_time, billable, level
 		FROM tasks t
 		$conditions 
 		ORDER BY id DESC";
+		error_log("Query Filtered no Assigned {$sql} /n", 3, '/var/tmp/pmangular.log');
 	} 
-
-	error_log("Actual Query {$sql} /n", 3, '/var/tmp/pmangular.log');
 
 	try {
 		$db = getConnection();
@@ -250,6 +262,44 @@ function getTasksByFilters() {
 }
 
 
+function searchAll() {
+	$results = new stdClass();
+	$request = Slim::getInstance()->request();
+	$data = json_decode($request->getBody());
+	$searchString = $data->searchstring;
+
+	$sql = "select t.id, t.name, t.notes, 'task' as type FROM tasks t
+	WHERE t.name LIKE \"%$searchString%\" OR t.notes LIKE \"%$searchString%\"
+	ORDER BY id DESC";
+
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+		$stmt->execute();
+		$resultsTask = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+
+	$sql = "select t.id, t.name, t.notes, 'project' as type FROM projects t
+	WHERE t.name LIKE \"%$searchString%\" OR t.notes LIKE \"%$searchString%\"
+	ORDER BY id DESC";
+
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+		$stmt->execute();
+		$resultsProjects = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+
+	$results = array_merge_recursive($resultsProjects, $resultsTask);
+	echo json_encode($results);
+
+}
 
 function getHostings() {
 	$sql = "select hostings.*, client.clientName, client.id as clientId FROM client

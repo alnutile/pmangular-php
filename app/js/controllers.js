@@ -172,14 +172,10 @@ function TaskDetails(TaskDetails, $routeParams, $location, $scope, $filter, $htt
 
 		$http.get('api/v3/filter').success(function(data){	
 			$scope.taskDetails.taskHelpers = data;
-			console.log($scope.taskDetails.taskHelpers.projects);
-			//var projectId = $scope.taskDetails.project_id;
-			//$scope.taskDetails.project_id = $scope.taskDetails.taskHelpers.projects[projectId];
 		});
 
 		var taskId = $routeParams.taskId;
 		$http.get('api/v3/notify/bytask/' + taskId).success(function(data){
-			console.log(data);
 			if(data === 'false') {
 				data = '';
 			}
@@ -189,7 +185,6 @@ function TaskDetails(TaskDetails, $routeParams, $location, $scope, $filter, $htt
 
 
 		$http.get('api/v3/assign/bytask/' + taskId).success(function(data){
-			console.log(data);
 			if(data === 'false') {
 				data = '';
 			}
@@ -205,9 +200,7 @@ function TaskDetails(TaskDetails, $routeParams, $location, $scope, $filter, $htt
 	});
 	
 	$scope.saveTask = function() {
-		console.log($scope.taskDetails);
 		if($scope.taskDetails.id > 0) {
-			console.log('Time for update');
 			TaskDetails.api.update({id:$scope.taskDetails.id}, $scope.taskDetails, function (res) { 
 				TaskDetails.broadcastChange();
 			});
@@ -242,10 +235,29 @@ function DashWidget(TaskByStatus, $location, $scope, $http) {
 	//Items assigned to you and !done
 
 	//Meeting and !done
-	$http({url: 'api/v3/task', method: "GET", params: {meeting:'1', data: self.data}}).success(function(data) {
-		   console.log(data);
+	var meetingsStuff = new Object();
+	var meetingsStuff = {meeting:"1", statuslist:2};
+	$http.post('api/v3/task/filtered', meetingsStuff).success(function(data) {
+	    $scope.meeting = data;
 	});
 
+	var searchString = {};
+	$scope.searchTerm = '';
+	$scope.search = '';
+	$scope.previousSearch = '';
+	$scope.searchResults = [{name:'Enter your search word above. After the 3rd letter the search will kick in for content types', id:'', type:'project or task or client'}];
+	$scope.searchAll = function() {
+		if($scope.searchTerm.length >= 3) {
+			if($scope.previousSearch != $scope.searchTerm) {
+				$scope.previousSearch = $scope.searchTerm;
+				console.log($scope.searchTerm);
+				$http.post('api/v3/searchall', {searchstring:$scope.searchTerm}).success(function(data) {
+					console.log(data);
+			    	return $scope.searchResults = data;
+				});
+			}
+		}
+	}
 
 }
 //@todo look at why this extra call

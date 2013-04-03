@@ -95,7 +95,7 @@ function updateTask($id) {
 		$stmt = $db->prepare($sql);
 		$stmt->bindParam("project_id", $data->project_id);
 		$stmt->bindParam("name", $data->name);
-		$stmt->bindParam("assigned", $data->assigned);
+		// $stmt->bindParam("assigned", $data->assigned);
 		$stmt->bindParam("notes", $data->notes);
 		$stmt->bindParam("due", $data->due);
 		$stmt->bindParam("created", $data->created);
