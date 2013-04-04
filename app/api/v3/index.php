@@ -224,17 +224,19 @@ function getTasksByFilters() {
 
 
 	//Assigned 
-	if(isset($data->assigned) && is_array($data->assigned)) {
+	if(isset($data->assigned) && is_array($data->assigned) && count($data->assigned > 0)) {
 		$assignedchosen = implode(',', $data->assigned);
+		//One more check
+		(!empty($assignedchosen)) ? $assignedchosen = " AND a.people_id IN($assignedchosen) " : null ;
+		
 		if(count($conditions)) {
 			$conditions = implode(' AND ', $conditions);
 		}
 		$sql = "select t.id, t.drupalId, t.project_id, t.name, a.people_id as assigned_person_id, notes, created, due, expected_time, status, meeting, actual_time, billable, level 
 		FROM tasks t
-		INNER JOIN assigned a ON a.taskId = t.id and a.people_id IN($assignedchosen) 
-		WHERE $conditions
-		GROUP BY t.id
-		ORDER BY id DESC";
+		INNER JOIN assigned a ON a.taskId = t.id 
+		WHERE $conditions $assignedchosen
+		GROUP BY t.id ORDER BY id DESC";
 		error_log("Query Filtered Assigned {$sql} /n", 3, '/var/tmp/pmangular.log');
 	} else {
 		if(is_array($conditions) && count($conditions)) {
