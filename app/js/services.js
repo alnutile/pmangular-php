@@ -123,4 +123,64 @@ angular.module('myApp.services', ['ngResource']).
 			}
 
 		}
+	}]).factory('Quotes', ['$resource', '$http', '$rootScope', '$routeParams', function($resource, $http, $rootScope, $routeParams){
+        return {
+        	//the resource provider interacting with the PHP backend
+	        api: 
+            $resource('api/v3/quote/:clientId', {}, {
+			        update: {method:'PUT'}
+          }),
+          lineitems: function() {
+              var lineItemDefault = [{
+                  major_feature: 'Major Feature',
+                  feature_set: 'Feature Set',
+                  item: 'Item',
+                  hours: 0,
+                  doc: 2
+                }];
+              return lineItemDefault;
+          },
+          general: function() {
+              var generalDefault = {
+                    id:0, 
+                    clientId:$routeParams.clientId, 
+                    project_name:'New Project', 
+                    exec_summary:"Nothing here to see yet...", 
+                    long_description: 'Nothing here to see yet...', 
+                    size: 2,
+                    created: '',
+                    total: 0,
+                    environment: 0.1,
+                    concept: 0.1,
+                    pm: 0.1,
+                    config: 0.1,
+                    testing:0.1,
+                    deployment:0.1,
+                    training:0.1,
+                    buffer:0.1
+                  };
+              return generalDefault;
+          },
+          includedItems: function() {
+              var includedDefault = [{
+                    id:0, 
+                    quote_id:0, 
+                    yesno:1,
+                    description:'Description Here'
+                  }];
+              return includedDefault;
+          },
+          assumptions: function(){
+              var assumption = [{
+                id:0,
+                quote_id:0,
+                description:'Assume away...'
+              }];
+              return assumption;
+          },
+          apiSend: 
+            $resource('api/v3/quotes/:id', {}, {
+              update: {method:'PUT'}
+          }),
+		}
 	}])

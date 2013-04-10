@@ -15,11 +15,14 @@ require 'clients.php';
 require 'people.php';
 require 'tasks.php';
 require 'filters.php';
+require 'quotes.php';
 
 require 'migration_projects.php';
 require 'migration_people.php';
 require 'migration_features.php';
 require 'migration_tasks.php';
+
+
 
 $app = new Slim();
 
@@ -68,6 +71,10 @@ $app->get('/hostings/search/:query', 'findByName');
 $app->post('/hostings', 'addHosting');
 $app->put('/hostings/:id', 'updateHosting');
 $app->delete('/hostings/:id',	'deleteHosting');
+
+//Quotes
+$app->get('/quote/:id', 'getQuotesForClient');
+$app->post('/quote', 'addQuote');
 
 //Migrations
 $app->get('/migrate/client', 'clientImport');
@@ -334,7 +341,6 @@ function getHosting($id) {
 }
 
 function addHosting() {
-	error_log('addHosting\n', 3, '/var/tmp/pmbackend.log');
 	$request = Slim::getInstance()->request();
 	$hosting = json_decode($request->getBody());
 	$sql = "INSERT INTO hostings (id, clientId, levelId, notes, backuplocation1, backuplocation2) VALUES (NULL, :clientId, :levelId, :notes, :backuplocation1, :backuplocation2)";

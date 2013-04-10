@@ -250,9 +250,7 @@ function DashWidget(TaskByStatus, $location, $scope, $http) {
 		if($scope.searchTerm.length >= 3) {
 			if($scope.previousSearch != $scope.searchTerm) {
 				$scope.previousSearch = $scope.searchTerm;
-				console.log($scope.searchTerm);
 				$http.post('api/v3/searchall', {searchstring:$scope.searchTerm}).success(function(data) {
-					console.log(data);
 			    	return $scope.searchResults = data;
 				});
 			}
@@ -262,3 +260,61 @@ function DashWidget(TaskByStatus, $location, $scope, $http) {
 }
 //@todo look at why this extra call
 DashWidget.$inject = ['TaskByStatus', '$location', '$scope', '$http'];
+
+
+function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
+  //@todo should have access to routeParams in the view
+  $scope.clientId = $routeParams.clientId;
+  
+ 	$scope.quote = Quotes.api.query({clientId: $routeParams.clientId}, [], function(results){
+ 		if(results.length < 1) {
+      $scope.quote.lineitems = {};
+ 			$scope.quote.general = Quotes.general();
+      $scope.quote.lineitems = Quotes.lineitems();
+      $scope.quote.includedItems = Quotes.includedItems();
+      $scope.quote.assumptions = Quotes.assumptions();
+      var notInc = Quotes.includedItems();
+      notInc[0].yesno = 0;
+      $scope.quote.notIncludedItems = notInc;
+      console.log($scope);
+ 		}
+ 	});
+  
+  $scope.addLineItem = function() {
+    var newline = Quotes.lineitems();
+    $scope.quote.lineitems.push(newline[0]);
+  }  
+
+  $scope.addIncluded = function() {
+    var newline = Quotes.includedItems();
+    $scope.quote.includedItems.push(newline[0]);
+  }  
+
+  $scope.addNotIncluded = function() {
+    var newline = Quotes.includedItems();
+    newline[0].yesno = 0;
+    $scope.quote.notIncludedItems.push(newline[0]);
+  }  
+  
+  $scope.addAssumption = function() {
+    var newline = Quotes.assumptions();
+    $scope.quote.assumptions.push(newline[0]);
+  } 
+	
+  $scope.quoteSave = function() {
+    var sendQuote = {};
+    sendQuote.general = $scope.quote.general;
+    sendQuote.lineitems = $scope.quote.lineitems;
+    sendQuote.notIncludedItems = $scope.quote.notIncludedItems;
+    sendQuote.includedItems = $scope.quote.includedItems;
+    sendQuote.assumptions = $scope.quote.assumptions;
+    
+    Quotes.api.save({}, sendQuote, function(res) { 
+        console.log($scope.quote.general);
+        console.log(sendQuote);
+    });
+  }
+
+}
+QuoteDetails.$inject = ['Quotes', '$routeParams', '$location', '$scope', '$http'];
+
