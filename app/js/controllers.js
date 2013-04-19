@@ -268,17 +268,21 @@ function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
   
  	$scope.quote = Quotes.api.query({clientId: $routeParams.clientId}, [], function(results){
  		if(results.length < 1) {
-      $scope.quote.lineitems = {};
- 			$scope.quote.general = Quotes.general();
-      $scope.quote.lineitems = Quotes.lineitems();
-      $scope.quote.includedItems = Quotes.includedItems();
-      $scope.quote.assumptions = Quotes.assumptions();
-      var notInc = Quotes.includedItems();
-      notInc[0].yesno = 0;
-      $scope.quote.notIncludedItems = notInc;
-      console.log($scope);
+	      $scope.quote.lineitems = {};
+	 	  $scope.quote.general = Quotes.general();
+	      $scope.quote.lineitems = Quotes.lineitems();
+	      $scope.quote.includedItems = Quotes.includedItems();
+	      $scope.quote.assumptions = Quotes.assumptions();
+	      $scope.quote.overhead = Quotes.overhead();
+	      var notInc = Quotes.includedItems();
+	      notInc[0].yesno = 0;
+	      $scope.quote.notIncludedItems = notInc;
  		}
  	});
+
+  $scope.quote.sizeChoices = Quotes.sizeChoices();
+  $scope.quote.rates = Quotes.rates();
+  $scope.quote.docs = Quotes.docs();
   
   $scope.addLineItem = function() {
     var newline = Quotes.lineitems();
@@ -301,16 +305,57 @@ function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
     $scope.quote.assumptions.push(newline[0]);
   } 
 	
+  $scope.updateHigh = function() {
+   var hoursTotal = 0;
+   var highTotal = 0;
+   var thisLine = this.lineitem;
+   var hours = thisLine.hours;
+   var doc = thisLine.doc;
+   var high = doc * hours;
+   this.lineitem.high = Math.round(high*100)/100;
+   
+   angular.forEach(this.quote.lineitems, function(value, key) {
+      hoursTotal = hoursTotal + value.hours;
+      highTotal = highTotal + value.high;
+   });
+      
+   var highTotal = Math.round(highTotal*100)/100;
+   this.quote.general.line_items_total_hours = hoursTotal;
+   this.quote.general.line_items_total_high_hours = highTotal;
+
+   //Seems since the change is happening here I need to 
+   //Also update the % fields
+
+   var quoteOverhead = angular.copy(this.quote.overhead);
+   angular.forEach(this.quote.overhead, function(value, key){
+   	//Total Hours x % 
+   	var overHeadItemValue = hoursTotal * value.percentage;
+   	var overHeadItemValue = Math.round(overHeadItemValue*100)/100;
+
+   	//High Hours
+   	var overHeadItemValueHigh = highTotal * value.percentage;
+   	var overHeadItemValueHigh = Math.round(overHeadItemValueHigh*100)/100;
+
+   	quoteOverhead[key].total = overHeadItemValue;
+	quoteOverhead[key].totalhigh = overHeadItemValueHigh;
+   });
+
+   $scope.quote.overhead = quoteOverhead;
+  
+  } 
+  
   $scope.quoteSave = function() {
+  	//@todo seems I should not have to build these
     var sendQuote = {};
     sendQuote.general = $scope.quote.general;
     sendQuote.lineitems = $scope.quote.lineitems;
     sendQuote.notIncludedItems = $scope.quote.notIncludedItems;
     sendQuote.includedItems = $scope.quote.includedItems;
     sendQuote.assumptions = $scope.quote.assumptions;
+    sendQuote.overhead = $scope.quote.overhead;
     
     Quotes.api.save({}, sendQuote, function(res) { 
-        console.log($scope.quote.general);
+        console.log($scope.quote);
         console.log(sendQuote);
     });
   }

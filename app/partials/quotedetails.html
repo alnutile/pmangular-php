@@ -7,20 +7,18 @@
 	  Manage Quotes. You can see all the related quotes below to the client.
     You can edit them by clicking the edit link. or Make New
 	</div>
-
+  <pre>{{quote.overhead}}</pre>
 	<div>
-    <pre>1.{{quote.general}}</pre>
-    <pre>2.{{quote.includedItems}}</pre>
-    <pre>3.{{quote.notIncludedItems}}</pre>
-    <pre>4.{{quote.lineitems}}</pre>
-    <pre>5.{{quote.assumptions}}</pre>
-
 		<!--start accordion-->
 		<div class="accordion" id="accordion2">
 			<div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{quote.general.id}}">
-						Edit Quote details for Project: {{quote.general.project_name}} Total Estimate: ${{quote.general.total}} 
+						Edit Quote details for Project: {{quote.general.project_name}} 
+            <br>
+            Total Estimate: ${{quote.general.total}} 
+            <br>
+            Project Size: {{ quote.general.size | sizeLabel }}
 					</a>
 				</div>
 				<div id="collapse{{quote.general.id}}" class="accordion-body">
@@ -46,25 +44,55 @@
 									<textarea rows="3" ng-model="quote.general.long_description" class="span6"></textarea>
 									<p class="help-block">longer...</p>		                 
 									
-                  <label  for="level-id">Size:</label>
-                  <input ng-model="quote.general.size" type="text" class="span2 typeahead"/>
-                  <!--@todo make this a model -->
-                  <ul class="typeahead dropdown-menu" style="top: 40px; left: 190px; display: none;">
-										<li data-value="1"><a href='#'>Level 1</a></li>
-										<li data-value="2"><a href='#'>Level 2</a></li>
-										<li data-value="3"><a href='#'>Level 3</a></li>
-									</ul>                  
- 
+                  <label>Size:</label>
+                  <select class="span4 chzn-select" data-rel="chosen" ng-model="quote.general.size" ng-options="s.id as s.name for s in quote.sizeChoices"></select>
+               
                   <label>Line Items</label>
-                  <p class="help-block">Major Feature | Feature Set | Item | Hours | DOC </p>
-                  <div  ng-repeat="lineitem in quote.lineitems" class="controls-row">
-                    <input class="span3" type="text" ng-model="lineitem.major_feature">
-                    <input class="span3" type="text" ng-model="lineitem.feature_set">
-                    <input class="span3" type="text" ng-model="lineitem.item">
-                    <input class="span1" type="text" ng-model="lineitem.hours">
-                    <input class="span1" type="text" ng-model="lineitem.doc">
-                  </div> 
-                  <button class='btn' ng-click="addLineItem()">Add Line Item</button>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Major Feature</th>
+                        <th>Feature Set</th>
+                        <th>Item</th>
+                        <th>Hours</th>
+                        <th><a href="#docModal" data-toggle="modal">DOC</a></th>
+                        <th>High</th>
+                      </tr>
+                    </thead>
+                    <tr ng-repeat="lineitem in quote.lineitems"></td>
+                      <td class="span2"><input class="span12" type="text" ng-model="lineitem.major_feature"></td>
+                      <td class="span2"><input class="span12" type="text" ng-model="lineitem.feature_set"></td>
+                      <td class="span4"><input class="span12" type="text" ng-model="lineitem.item"></td>
+                      <td class="span2"><input class="span12 line-item-hours" id="line-item-{{$index}}" min="0" max="99" step="any" type="number" ng-model="lineitem.hours" ng-change="updateHigh()"></td>
+                      <td class="span2">
+                        <select 
+                          class="span12 chzn-select" 
+                          ng-change="updateHigh()"
+                          ng-model="lineitem.doc"
+                          data-rel="chosen" 
+                          name="doc"
+                          ng-options="d.applied as d.name for d in quote.docs">
+                        </select>
+                      </td>
+                      <td class="span2"><input class="span12 line-item-high" min="0" max="99" step="any" type="number" ng-model="lineitem.high" disabled /></td>                   
+                    </tr>
+                  </table>
+
+                  <button class='btn addlineitem' ng-click="addLineItem()">Add Line Item</button>
+ 
+                   <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Total Development</th>
+                        <th>Total High Development</th>
+                      </tr>
+                    </thead>
+                    <tr>
+                      <td class="span1"><input class="span6 total-hours" step="any" type="number" ng-model="quote.general.line_items_total_hours" disabled /></td>
+                      <td class="span1"><input class="span6 total-hours-high" step="any" type="number"  ng-model="quote.general.line_items_total_high_hours" disabled /></td>                
+                    </tr>
+                  </table>
+ 
  
                   <label>What's Included</label>
                   <div  ng-repeat="included in quote.includedItems" class="controls-row">
@@ -84,51 +112,39 @@
                   </div> 
                   <button class='btn' ng-click="addAssumption()">Add Assumption</button>
                    
-                  
-                  <label>Environment:</label>
-									<input ng-model="quote.general.environment" type="text" class="span1">
-                  <input ng-model="quote.environment_total" type="text" class="span1" disabled/>
-									<p class="help-block">% to consider...</p> 
+                  <h2>Overheads</h2>
 
-                  <label>Concept and Solution:</label>
-									<input ng-model="quote.general.concept" type="text" class="span1">
-                  <input ng-model="quote.general.concept_total" type="text" class="span1" disabled/>
-									<p class="help-block">% to consider...</p> 
-
-                  <label>Testing:</label>
-									<input ng-model="quote.general.testing" type="text" class="span1">
-                  <input ng-model="quote.general.testing_total" type="text" class="span1" disabled/>
-									<p class="help-block">% to consider...</p> 
-
-                  <label>Project Managment:</label>
-									<input ng-model="quote.general.pm" type="text" class="span1">
-                  <input ng-model="quote.general.pm_total" type="text" class="span1" disabled/>
-									<p class="help-block">% to consider...</p> 
  
-                  <label>Config:</label>
-									<input ng-model="quote.general.config" type="text" class="span1">
-                  <input ng-model="quote.general.config_total" type="text" class="span1" disabled/>
-									<p class="help-block">% to consider...</p> 
- 
-                  <label>Training:</label>
-									<input ng-model="quote.general.training" type="text" class="span1">
-                  <input ng-model="quote.general.training_total" type="text" class="span1" disabled/>
-									<p class="help-block">% to consider...</p> 
-                                                                      
-                  <label>Deployment:</label>
-									<input ng-model="quote.general.deployment" type="text" class="span1">
-                  <input ng-model="quote.general.deployment_total" type="text" class="span1" disabled/>
-									<p class="help-block">% to consider...</p> 
-                  
-                  <label>Buffer:</label>
-									<input ng-model="quote.general.buffer" type="text" class="span1">
-                  <input ng-model="quote.general.buffer_total" type="text" class="span1" disabled/>
-									<p class="help-block">% to consider...</p> 
-                                                                      
+                   <table class="table overheads">
+                    <thead>
+                      <tr>
+                        <th>Label</th>
+                        <th>Percentage</th>
+                        <th>Hours from Total Dev</th>
+                        <th>Hours from Total Dev High</th>
+                      </tr>
+                    </thead>
+                    <tr ng-repeat="percentages in quote.overhead">
+                      <td class="span4">
+                        <label>{{percentages.label}}:</label>
+                      </td>
+                      <td class="span2">
+                        <input class="overhead-{{percentages.code}}" ng-model="percentages.percentage" step="any" type="number" >
+                      </td>                
+                      <td class="span2">
+                          <input class="overhead-{{percentages.code}}-total" ng-model="percentages.total" step="any" type="number" disabled/>
+                      </td>  
+                      <td class="span2">
+                          <input class="overhead-{{percentages.code}}-high" ng-model="percentages.totalhigh" step="any" type="number"  disabled/>
+                      </td>
+                  </tr>
+                  </table>
+                                                                 
                   <label>Total:</label>
-									<input ng-model="quote.general.total" type="text" class="span2">
+									<input ng-model="quote.general.total" step="any" type="number" class="span2">
+                  <input ng-model="quote.general.total_high" step="any" type="number" class="span2">
 									<p class="help-block">This will update on it's own but feel free to tweak it.</p>                 
-                                    
+                               
                   <div class="form-actions">
                     <pre>{{clientId}}</pre>
                     <button ng-click="quoteSave()" type="save" class="save btn-primary">Save</button>
@@ -141,6 +157,26 @@
 		</div>
 		<!--end accordion-->
 	</div>
+</div>
+<div id="docModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="docLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="docLabel">Degree of Certainty</h3>
+  </div>
+  <div class="modal-body">
+    <table class="table-striped table-bordered">
+      <thead>
+        <td>Level</td>
+        <td>Name</td>
+        <td>Applied</td>
+      </thead>
+      <tr ng-repeat="docLine in quote.docs">
+        <td>{{docLine.level}}</td>
+        <td>{{docLine.name}}</td>
+        <td>{{docLine.applied}}</td>
+      </tr>
+    </table>
+  </div>
 </div>
 
 

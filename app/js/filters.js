@@ -30,4 +30,12 @@ filter('datefilter', function() {
         return level;
       }
     };
+  }).filter('sizeLabel', function() {
+    return function(sizeId) {
+      var scope = this;
+      if(sizeId >= 0) {
+        var name = scope.quote.sizeChoices[sizeId]["name"];
+        return name;
+      }
+    };
   });
