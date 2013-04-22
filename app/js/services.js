@@ -154,6 +154,8 @@ angular.module('myApp.services', ['ngResource']).
                     line_items_total_high_hours: 0,
                     total: 0,
                     total_high: 0,
+                    total_quote: 0,
+                    total_quote_high: 0,
                     environment: 0.1,
                     concept: 0.1,
                     pm: 0.1,
@@ -393,6 +395,27 @@ angular.module('myApp.services', ['ngResource']).
                   markup:100
                 };
               return sizes;
+          },
+          totalPercs: function(percsScope) {
+             var totalPercs = 0;
+             var totalPercsHigh = 0;
+
+             angular.forEach(percsScope, function(value, key) {
+                totalPercs = totalPercs + value.total;
+                totalPercsHigh = totalPercsHigh + value.totalhigh;
+             });
+
+             var totalPercs = Math.round(totalPercs*100)/100;
+             var totalPercsHigh = Math.round(totalPercsHigh*100)/100;
+
+             var totals = [totalPercs, totalPercsHigh];
+
+             return totals;
+          },
+          totalCost: function(scope) {
+             total_quote = scope.quote.general.total * 100;
+             total_quote_high = scope.quote.general.total_high * 100;
+             return [total_quote, total_quote_high];
           },
           apiSend: 
             $resource('api/v3/quotes/:id', {}, {

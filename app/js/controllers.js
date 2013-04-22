@@ -283,6 +283,8 @@ function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
   $scope.quote.sizeChoices = Quotes.sizeChoices();
   $scope.quote.rates = Quotes.rates();
   $scope.quote.docs = Quotes.docs();
+  $scope.quote.totalPerc = 0;
+  $scope.quote.totalPercHigh = 0;
   
   $scope.addLineItem = function() {
     var newline = Quotes.lineitems();
@@ -306,12 +308,14 @@ function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
   } 
 	
   $scope.updateHigh = function() {
+
    var hoursTotal = 0;
    var highTotal = 0;
    var thisLine = this.lineitem;
    var hours = thisLine.hours;
    var doc = thisLine.doc;
    var high = doc * hours;
+   
    this.lineitem.high = Math.round(high*100)/100;
    
    angular.forEach(this.quote.lineitems, function(value, key) {
@@ -320,8 +324,10 @@ function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
    });
       
    var highTotal = Math.round(highTotal*100)/100;
+
    this.quote.general.line_items_total_hours = hoursTotal;
    this.quote.general.line_items_total_high_hours = highTotal;
+
 
    //Seems since the change is happening here I need to 
    //Also update the % fields
@@ -340,10 +346,66 @@ function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
 	quoteOverhead[key].totalhigh = overHeadItemValueHigh;
    });
 
-   $scope.quote.overhead = quoteOverhead;
-  
+   	$scope.quote.overhead = quoteOverhead;
+
+  	//Set totals for showing Overhead Totals
+  	var totalOverhead = Quotes.totalPercs($scope.quote.overhead);
+  	//Just used to set a label on the form
+  	$scope.quote.totalPerc = totalOverhead[0];
+  	$scope.quote.totalPercHigh = totalOverhead[1];
+
+   //Update Total high and low at the bottom of the sheet
+   //this it the total of line items and % area
+
+   $scope.quote.general.total = hoursTotal + totalOverhead[0];
+   $scope.quote.general.total_high = highTotal + totalOverhead[1];
+
+   //Set Totals Monetary
+   //@todo move these into a directive?
+   //@todo make this value 100 for example 
+   //  dynamic
+	var Costs = Quotes.totalCost($scope);
+	$scope.quote.general.total_quote = Math.round(Costs[0]*100)/100;
+	$scope.quote.general.total_quote_high = Math.round(Costs[1]*100)/100;
+
   } 
   
+  $scope.updateOverhead = function() {
+  	var changedOverhead = angular.copy(this.percentages);
+  	//Get now totals
+
+  	var totalLineItemHours = $scope.quote.general.line_items_total_hours;
+  	var totalLineItemHighHours = $scope.quote.general.line_items_total_high_hours;
+  	var newTotalPercentage = changedOverhead.percentage;
+  	var newTotal = newTotalPercentage * totalLineItemHours;
+  	var newTotal = Math.round(newTotal*100)/100;
+  	var newHigh = newTotalPercentage * totalLineItemHighHours; 
+  	var newHigh = Math.round(newHigh*100)/100;
+  	
+  	this.percentages.total = newTotal;
+  	this.percentages.totalhigh = newHigh;
+
+  	//Set totals for showing Overhead Totals
+  	var totalOverhead = Quotes.totalPercs($scope.quote.overhead);
+  	//Just used to set a label on the form
+  	$scope.quote.totalPerc = totalOverhead[0];
+  	$scope.quote.totalPercHigh = totalOverhead[1];
+
+  	//reset totals
+  	var total = totalLineItemHours + totalOverhead[0]; 
+  	var total_high = totalLineItemHighHours + totalOverhead[1]; 
+   	$scope.quote.general.total = total;
+   	$scope.quote.general.total_high = total_high;
+
+  	var Costs = Quotes.totalCost($scope);
+  	$scope.quote.general.total_quote = Math.round(Costs[0]*100)/100;
+   	$scope.quote.general.total_quote_high = Math.round(Costs[1]*100)/100;
+
+
+  }
+
+
+
   $scope.quoteSave = function() {
   	//@todo seems I should not have to build these
     var sendQuote = {};

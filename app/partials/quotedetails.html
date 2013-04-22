@@ -7,7 +7,6 @@
 	  Manage Quotes. You can see all the related quotes below to the client.
     You can edit them by clicking the edit link. or Make New
 	</div>
-  <pre>{{quote.overhead}}</pre>
 	<div>
 		<!--start accordion-->
 		<div class="accordion" id="accordion2">
@@ -16,7 +15,9 @@
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{quote.general.id}}">
 						Edit Quote details for Project: {{quote.general.project_name}} 
             <br>
-            Total Estimate: ${{quote.general.total}} 
+            Total Estimate: ${{quote.general.total_quote}} 
+            <br>
+            Total Estimate High: ${{quote.general.total_quote_high}} 
             <br>
             Project Size: {{ quote.general.size | sizeLabel }}
 					</a>
@@ -129,24 +130,29 @@
                         <label>{{percentages.label}}:</label>
                       </td>
                       <td class="span2">
-                        <input class="overhead-{{percentages.code}}" ng-model="percentages.percentage" step="any" type="number" >
+                        <input ng-change="updateOverhead()" class="overhead-{{percentages.code}}" ng-model="percentages.percentage" step="any" type="number" >
                       </td>                
                       <td class="span2">
-                          <input class="overhead-{{percentages.code}}-total" ng-model="percentages.total" step="any" type="number" disabled/>
+                          <input class="overhead-{{percentages.code}}-total" ng-model="percentages.total"  min="0" step="any" type="number" disabled/>
                       </td>  
                       <td class="span2">
-                          <input class="overhead-{{percentages.code}}-high" ng-model="percentages.totalhigh" step="any" type="number"  disabled/>
+                          <input class="overhead-{{percentages.code}}-high" ng-model="percentages.totalhigh"  min="0" step="any" type="number"  disabled/>
                       </td>
                   </tr>
                   </table>
+                  <label>Total Overhead Hours: {{quote.totalPerc}}</label>
+                  <label>Total Overhead Hours High: {{quote.totalPercHigh}} </label>
+
                                                                  
-                  <label>Total:</label>
-									<input ng-model="quote.general.total" step="any" type="number" class="span2">
-                  <input ng-model="quote.general.total_high" step="any" type="number" class="span2">
-									<p class="help-block">This will update on it's own but feel free to tweak it.</p>                 
+                  <h1>Total Hours all Together:</h1>
+									<input ng-model="quote.general.total" step="any" type="number" class="span2 total-hours-and-overhead" disabled/>
+                  <input ng-model="quote.general.total_high" step="any" type="number" class="span2 total-hours-and-overhead-high" disabled/>
+									<p class="help-block">no tweaking here....</p> 
+
+                  <h2>Total Estimate : ${{quote.general.total_quote}}</h2>
+                  <h2>Total Estimate High: ${{quote.general.total_quote_high}} </h2>              
                                
                   <div class="form-actions">
-                    <pre>{{clientId}}</pre>
                     <button ng-click="quoteSave()" type="save" class="save btn-primary">Save</button>
                     <button type="delete" class="delete btn btn-danger">Delete</button>
                   </div>
