@@ -1,18 +1,9 @@
 <?php
 
 function getQuotesForClient($id) {
-	$sql = "SELECT * FROM quotes WHERE clientId=:id";
-	try {
-		$db = getConnection();
-		$stmt = $db->prepare($sql);  
-		$stmt->bindParam("id", $id);
-		$stmt->execute();
-		$data = $stmt->fetchAll(PDO::FETCH_OBJ);
-		$db = null;
-		echo json_encode($data); 
-	} catch(PDOException $e) {
-		echo '{"error":{"text  for id '.$id.'":'. $e->getMessage() .'}}'; 
-	}
+	$data = new QuotesCrud();
+	$results = $data->get(array('id' => $id));
+	echo json_encode($results);
 }
 
 function addQuote() {
@@ -64,8 +55,37 @@ class QuotesCrud {
 		}		
 	}
 
-	public function get($objectId) {
-
+	public function get($params) {
+		//build data object
+		//general
+		//includedItems
+		//notIncludedItems
+		//assumptions
+		//lineitems
+		//overhead
+		$data = new stdClass;
+		$wheres = array('clientid' => $params['id']);
+		$general = self::_getDataObject(array('table' => 'quotes', 'wheres' => $wheres));
+		$data->general = $general;
+		return $data;
+	}
+	//@todo move into toher area
+	private static function _getDataObject($params) {
+		$table = $params['table'];
+		$wheres = $params['wheres'];
+		$wheres = implode(' AND ', $wheres);
+		$sql = "SELECT * FROM $table WHERE $wheres";
+		try {
+			$db = getConnection();
+			$stmt = $db->prepare($sql);
+			$stmt->execute();
+			$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+			$db = null;
+			error_log("results of query" . print_r($data, 1), 3, '/var/tmp/pmbackend.log');
+			return $data;
+		} catch(PDOException $e) {
+			echo '{"error":{"text  for id '.$id.'":'. $e->getMessage() .'}}'; 
+		}
 	}
 
 	public function put($object) {
