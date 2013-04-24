@@ -274,6 +274,8 @@ function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
 	      $scope.quote.includedItems = Quotes.includedItems();
 	      $scope.quote.assumptions = Quotes.assumptions();
 	      $scope.quote.overhead = Quotes.overhead();
+	      $scope.quote.quoteStatus = Quotes.quoteStatus();
+	      $scope.quote.general.status = 0;
 	      var notInc = Quotes.includedItems();
 	      notInc[0].yesno = 0;
 	      $scope.quote.notIncludedItems = notInc;
@@ -418,7 +420,8 @@ function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
     
     Quotes.api.save({}, sendQuote, function(res) { 
         console.log($scope.quote);
-        console.log(sendQuote);
+        console.log(res);
+        $scope.quote.general.id = res.general.id;
     });
   }
 

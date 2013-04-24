@@ -13,13 +13,15 @@
 			<div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{quote.general.id}}">
-						Edit Quote details for Project: {{quote.general.project_name}} 
+            Edit Quote details for Project: {{quote.general.project_name}} 
             <br>
             Total Estimate: ${{quote.general.total_quote}} 
             <br>
             Total Estimate High: ${{quote.general.total_quote_high}} 
             <br>
             Project Size: {{ quote.general.size | sizeLabel }}
+            <br>
+            Status: {{ quote.general.status | statusLabel }}
 					</a>
 				</div>
 				<div id="collapse{{quote.general.id}}" class="accordion-body">
@@ -43,8 +45,12 @@
                   
                   <label>Long Descripton</label>
 									<textarea rows="3" ng-model="quote.general.long_description" class="span6"></textarea>
-									<p class="help-block">longer...</p>		                 
+									<p class="help-block">longer summary...</p>		                 
 									
+                  <label>Status:</label>
+                  <select class="span4 chzn-select" data-rel="chosen"  ng-model="quote.general.status" 
+                    ng-options="stat.id as stat.name for stat in quote.quoteStatus"></select>
+
                   <label>Size:</label>
                   <select class="span4 chzn-select" data-rel="chosen" ng-model="quote.general.size" ng-options="s.id as s.name for s in quote.sizeChoices"></select>
                

@@ -134,6 +134,7 @@ angular.module('myApp.services', ['ngResource']).
               var lineItemDefault = [{
                   major_feature: 'Major Feature',
                   feature_set: 'Feature Set',
+                  quote_id: 0,
                   item: 'Item',
                   hours: 0,
                   high: 0,
@@ -152,18 +153,11 @@ angular.module('myApp.services', ['ngResource']).
                     created: '',
                     line_items_total_hours: 0,
                     line_items_total_high_hours: 0,
+                    status: 1,
                     total: 0,
                     total_high: 0,
                     total_quote: 0,
-                    total_quote_high: 0,
-                    environment: 0.1,
-                    concept: 0.1,
-                    pm: 0.1,
-                    config: 0.1,
-                    testing:0.1,
-                    deployment:0.1,
-                    training:0.1,
-                    buffer:0.1
+                    total_quote_high: 0
                   };
               return generalDefault;
           },
@@ -395,6 +389,22 @@ angular.module('myApp.services', ['ngResource']).
                   markup:100
                 };
               return sizes;
+          },
+          quoteStatus: function(){
+              statusList = [{
+                    id:0,
+                    name:'New'
+                  }, {
+                    id:1,
+                    name:'Sent'
+                  }, {
+                    id:2,
+                    name:'Rejected'
+                  }, {
+                    id:3,
+                    name:'Approved'
+                  }];
+              return statusList;
           },
           totalPercs: function(percsScope) {
              var totalPercs = 0;

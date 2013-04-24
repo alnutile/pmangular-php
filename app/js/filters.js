@@ -38,4 +38,12 @@ filter('datefilter', function() {
         return name;
       }
     };
+  }).filter('statusLabel', function() {
+    return function(statusId) {
+      var scope = this;
+      if(statusId >= 0) {
+        var name = scope.quote.quoteStatus[statusId]["name"];
+        return name;
+      }
+    };
   });
