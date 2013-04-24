@@ -406,8 +406,6 @@ function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
 
   }
 
-
-
   $scope.quoteSave = function() {
   	//@todo seems I should not have to build these
     var sendQuote = {};
