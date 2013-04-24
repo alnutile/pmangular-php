@@ -157,7 +157,15 @@ angular.module('myApp.services', ['ngResource']).
                     total: 0,
                     total_high: 0,
                     total_quote: 0,
-                    total_quote_high: 0
+                    total_quote_high: 0,
+                    environment: 0.1,
+                    concept: 0.1,
+                    pm: 0.1,
+                    config: 0.1,
+                    testing:0.1,
+                    deployment:0.1,
+                    training:0.1,
+                    buffer:0.1
                   };
               return generalDefault;
           },
