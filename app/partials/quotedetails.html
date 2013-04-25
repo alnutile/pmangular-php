@@ -22,6 +22,8 @@
             Project Size: {{ quote.general.size | sizeLabel }}
             <br>
             Status: {{ quote.general.status | statusLabel }}
+            <br>
+            Created: {{ quote.general.created }}
 					</a>
 				</div>
 				<div id="collapse{{quote.general.id}}" class="accordion-body">
@@ -35,7 +37,6 @@
 									<input ng-model="quote.general.id" type="text" class="span1" disabled/>
                   
                   <label>Project Name</label>
-                  {{quote.general.project_name}}
 									<input ng-model="quote.general.project_name" type="text" class="span6"/>
 									<p class="help-block">enter a name?</p>								
                   
@@ -52,7 +53,8 @@
                     ng-options="stat.id as stat.name for stat in quote.quoteStatus"></select>
 
                   <label>Size:</label>
-                  <select class="span4 chzn-select" data-rel="chosen" ng-model="quote.general.size" ng-options="s.id as s.name for s in quote.sizeChoices"></select>
+                  <select class="span4 chzn-select" data-rel="chosen" ng-model="quote.general.size" 
+                    ng-options="s.id as s.name for s in quote.sizeChoices"></select>
                
                   <label>Line Items</label>
                   <table class="table">
@@ -131,6 +133,7 @@
                         <th>Hours from Total Dev High</th>
                       </tr>
                     </thead>
+                    {{quote.overhead}}
                     <tr ng-repeat="percentages in quote.overhead">
                       <td class="span4">
                         <label>{{percentages.label}}:</label>

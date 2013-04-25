@@ -1,0 +1,833 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"obj",
+				"objectId"
+			],
+			[
+				"error",
+				"error_log"
+			],
+			[
+				"quo",
+				"quoteCrud"
+			],
+			[
+				"Quote",
+				"QuotesCrud"
+			],
+			[
+				"Percen",
+				"percentages"
+			],
+			[
+				"tota",
+				"totals"
+			],
+			[
+				"total",
+				"totalhigh"
+			],
+			[
+				"tot",
+				"totalPercs"
+			],
+			[
+				"percen",
+				"percentages"
+			],
+			[
+				"per",
+				"percentages"
+			],
+			[
+				"to",
+				"toBeGreaterThan"
+			],
+			[
+				"high",
+				"highTotal"
+			],
+			[
+				"totl",
+				"total_high"
+			],
+			[
+				"over",
+				"overHeadObj"
+			],
+			[
+				"res",
+				"resultsTask"
+			],
+			[
+				"result",
+				"resultsProjects"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"search",
+				"searchTerm"
+			],
+			[
+				"searc",
+				"searchString"
+			],
+			[
+				"con",
+				"conditions"
+			],
+			[
+				"ass",
+				"assigned"
+			],
+			[
+				"stat",
+				"status"
+			],
+			[
+				"expe",
+				"expected_time"
+			],
+			[
+				"default",
+				"defaultDate"
+			],
+			[
+				"text",
+				"textchosen"
+			],
+			[
+				"assigned",
+				"assignedchosen"
+			],
+			[
+				"te",
+				"toBeGreaterThan"
+			],
+			[
+				"ex",
+				"expectGET"
+			],
+			[
+				"htt",
+				"httpBackend"
+			],
+			[
+				"h",
+				"httpBackend_"
+			],
+			[
+				"l",
+				"log"
+			],
+			[
+				"Pe",
+				"PeopleList"
+			],
+			[
+				"person",
+				"personId"
+			],
+			[
+				"sta",
+				"status"
+			],
+			[
+				"client",
+				"clientId"
+			],
+			[
+				"drupal_is",
+				"drupal_is_front_page"
+			],
+			[
+				"if_node",
+				"if_node_is_in_group"
+			],
+			[
+				"redi",
+				"redirect_url"
+			],
+			[
+				"rei",
+				"redirect_url"
+			],
+			[
+				"is_nu",
+				"is_numeric"
+			],
+			[
+				"defaul",
+				"default_color"
+			],
+			[
+				"it",
+				"italic"
+			],
+			[
+				"font",
+				"font-style"
+			],
+			[
+				"di",
+				"display"
+			],
+			[
+				"Hos",
+				"HostingModel"
+			],
+			[
+				"host",
+				"hostedCollection"
+			],
+			[
+				"Hoste",
+				"HostingCollection"
+			],
+			[
+				"Hosted",
+				"hostedDetailView"
+			],
+			[
+				"Host",
+				"HostingCollection"
+			],
+			[
+				"clientList",
+				"clientListView"
+			],
+			[
+				"Client",
+				"ClientListView"
+			],
+			[
+				"clie",
+				"clients"
+			],
+			[
+				"phon",
+				"phone2"
+			],
+			[
+				"cli",
+				"clientName"
+			],
+			[
+				"newsys",
+				"newSystemMD5"
+			],
+			[
+				"new",
+				"newSystem"
+			],
+			[
+				"drupal",
+				"drupalRecord"
+			],
+			[
+				"row",
+				"rowExists"
+			],
+			[
+				"query",
+				"queryExists"
+			],
+			[
+				"si",
+				"sidebar-left"
+			],
+			[
+				"val",
+				"valOfId"
+			],
+			[
+				"Hosting",
+				"HostingModel"
+			],
+			[
+				"btn",
+				"btn-success"
+			],
+			[
+				"delet",
+				"deleteHosting"
+			],
+			[
+				"cl",
+				"clientName"
+			],
+			[
+				"back",
+				"backuplocation2"
+			],
+			[
+				"bac",
+				"backuplocation1"
+			],
+			[
+				"type",
+				"typeahead"
+			],
+			[
+				"backup",
+				"backuplocation2"
+			],
+			[
+				"ba",
+				"backuplocation1"
+			],
+			[
+				"leve",
+				"levelId"
+			],
+			[
+				"getHostin",
+				"getHostings"
+			],
+			[
+				"sim",
+				"simplified_mailhandler"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/home/alfrednutile/www/rubyroguesold/rro/app/controllers/rrolds_controller.rb",
+			"settings":
+			{
+				"buffer_size": 1959,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/alfrednutile/www/rubyroguesold/rro/app/views/rrolds/feed.atom.builder",
+			"settings":
+			{
+				"buffer_size": 1504,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/alfrednutile/www/rubyroguesold/rro/app/views/rrolds/index.html.erb",
+			"settings":
+			{
+				"buffer_size": 1547,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Ruby Rogues Episodes 1 thru 60</title>\n	<%= stylesheet_link_tag    \"application\", :media => \"all\" %>\n	<%= javascript_include_tag \"application\" %>\n	<%= csrf_meta_tags %>\n	<%= yield :head %>\n</head>\n<body class=\"rr-feed\">\n\n<div class=\"container main\">\n	<div class=\"row\">\n		<span class=\"span12\">\n			<header class=\"navbar navbar-fixed-top navbar-inverse\">\n			  <div class=\"navbar-inner\">\n			    <div class=\"container\">\n			      <span id=\"brand-bar\" class=\"brand\"><span id=\"brand-info\">Ruby Rogues Episodes 1 thru 60</span></span>\n			      <div id=\"menu-top-items\" class=\"nav-collapse collapse\">\n			        <ul id=\"main-menu\" class=\"nav\">\n			            <li><%= link_to \"Home\", root_path %></li>\n			            <li><%= link_to \"Feed\", feed_path %></li>\n			        </ul>\n			      </div>  \n			    </div>\n			  </div>\n			</header>\n		</span>\n	</div>	\n\n	<%= yield %>\n\n\n	<div class=\"row\">\n		<div class=\"span12\">\n			<footer class=\"footer\">\n			  <nav>\n			    <ul class=\"nav\">\n			      <li><%= link_to \"Full Episodes Guide\",   'http://rubyrogues.com/episode-guide/' %></li>\n			      <li><a href=\"http://alfrednutile.info\" taget=\"_blank\">Alfred Nutile rails/ruby newbie</a></li>\n			    </ul>\n			  </nav>\n			</footer>\n		</div>\n	</div>\n	\n</div>\n\n</body>\n</html>",
+			"file": "/home/alfrednutile/www/rubyroguesold/rro/app/views/layouts/application.html.erb",
+			"file_size": 1280,
+			"file_write_time": 1366854468000000,
+			"settings":
+			{
+				"buffer_size": 1282,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 222.0,
+		"selected_items":
+		[
+			[
+				"html",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Preferences: Browse Packages"
+			],
+			[
+				"Plug",
+				"Package Control: Upgrade Package"
+			],
+			[
+				"Pac",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 575.0
+	},
+	"console":
+	{
+		"height": 139.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/alfrednutile/www/railstutorials/sample_app/app/views/static_pages/home.html.erb",
+		"/home/alfrednutile/www/rubyroguesold/rro/app/assets/stylesheets/rrolds.css.scss",
+		"/home/alfrednutile/www/rubyroguesold/rro/config/routes.rb",
+		"/home/alfrednutile/www/rubyroguesold/rro/app/models/rrold.rb",
+		"/home/alfrednutile/www/rubyroguesold/rro/app/controllers/application_controller.rb",
+		"/home/alfrednutile/www/restpm/public/js/routers/router.js",
+		"/home/alfrednutile/www/pmtheme/Controller/Controller.php",
+		"/home/alfrednutile/www/pmtheme/includes/Views.php",
+		"/home/alfrednutile/www/pmtheme/includes/ApiCaller.php",
+		"/home/alfrednutile/www/pmangular/test/e2e/scenarios.js",
+		"/home/alfrednutile/www/pmangular/app/index.html",
+		"/home/alfrednutile/www/pmangular/app/api/v3/index.php",
+		"/home/alfrednutile/www/pmangular/app/partials/clientsList.html",
+		"/home/alfrednutile/www/pmangular/app/js/controllers.js",
+		"/home/alfrednutile/www/cellar/tutorial/api/index.php",
+		"/home/alfrednutile/www/pmangular/app/js/filters.js",
+		"/home/alfrednutile/www/pmangular/app/api/v3/quotes.php",
+		"/home/alfrednutile/www/pmangular/app/partials/quotedetails.html",
+		"/home/alfrednutile/www/pmangular/app/js/services.js",
+		"/home/alfrednutile/www/pmangular/config/testacular-e2e.conf.js",
+		"/home/alfrednutile/www/pmangular/test/unit/filtersSpec.js",
+		"/home/alfrednutile/www/pmangular/app/js/app.js",
+		"/home/alfrednutile/www/pmangular/test/unit/controllersSpec.js",
+		"/home/alfrednutile/www/pmangular/test/e2e/runner.html",
+		"/home/alfrednutile/Desktop/test. Rackham",
+		"/home/alfrednutile/.config/sublime-text-2/Packages/User/sftp_servers/alfrednutile",
+		"/home/alfrednutile/Projects/PMAngular.sublime-project",
+		"/home/alfrednutile/www/pmangular/app/partials/dash.html",
+		"/home/alfrednutile/www/pmangular/app/api/v3/filters.php",
+		"/home/alfrednutile/www/pmangular/app/partials/taskList.html",
+		"/home/alfrednutile/www/pmangular/app/partials/taskDetails.html",
+		"/home/alfrednutile/www/pmangular/app/api/v3/migration.php",
+		"/home/alfrednutile/www/pmangular/app/api/v3/tasks.php",
+		"/home/alfrednutile/www/pmangular/app/custom/custom.js",
+		"/home/alfrednutile/www/pmangular/app/partials/hostingdetails.html",
+		"/home/alfrednutile/www/pmangular/app/partials/clientsHosting.html",
+		"/home/alfrednutile/www/pmangular/app/partials/services.html",
+		"/home/alfrednutile/www/pmangular/app/custom/css/style.css",
+		"/home/alfrednutile/www/pmangular/app/custom/css/app.css",
+		"/home/alfrednutile/www/pmangular/app/partials/peopleDetails.html",
+		"/home/alfrednutile/www/pmangular/app/partials/peopleList.html",
+		"/home/alfrednutile/www/pmangular/app/partials/clientDetails.html",
+		"/home/alfrednutile/www/pmangular/app/partials/header.html",
+		"/home/alfrednutile/www/pmangular/app/api/v3/migration_tasks.php",
+		"/home/alfrednutile/www/pmangular/app/css/tasks.css",
+		"/home/alfrednutile/www/pmangular/app/css/app.css",
+		"/home/alfrednutile/www/pmangular/app/js/directives.js",
+		"/home/alfrednutile/www/pmangular/app/bootstrap/js/bootstrap.js",
+		"/home/alfrednutile/www/angular/angular-phonecat/app/js/filters.js",
+		"/home/alfrednutile/www/angular/angular-phonecat/app/js/directives.js",
+		"/home/alfrednutile/www/pmangular/app/css/bootstrap.css",
+		"/home/alfrednutile/www/pmtheme/index.php",
+		"/home/alfrednutile/www/angularcellar/partials/wine-details.html",
+		"/home/alfrednutile/www/angularcellar/partials/wine-list.html",
+		"/home/alfrednutile/www/angularcellar/js/app.js",
+		"/home/alfrednutile/www/angularcellar/js/services.js",
+		"/home/alfrednutile/www/angularcellar/index.html",
+		"/home/alfrednutile/www/angular/angular-phonecat/test/e2e/scenarios.js",
+		"/home/alfrednutile/www/angular/angular-phonecat/test/unit/controllersSpec.js",
+		"/home/alfrednutile/www/angular/angular-phonecat/app/js/services.js",
+		"/home/alfrednutile/www/angular/angular-phonecat/app/js/controllers.js",
+		"/home/alfrednutile/www/angularcellar/js/controllers.js",
+		"/home/alfrednutile/www/angular/angular-phonecat/app/index.html",
+		"/home/alfrednutile/www/pmangular/test/unit/servicesSpec.js",
+		"/home/alfrednutile/www/angular/angular-phonecat/test/unit/servicesSpec.js",
+		"/home/alfrednutile/www/pmangular/config/testacular.conf.js",
+		"/home/alfrednutile/www/pmangular/scripts/test.sh",
+		"/home/alfrednutile/www/pmangular/app/api/v3/people.php",
+		"/home/alfrednutile/www/pmangular/app/partials/partial2.html",
+		"/home/alfrednutile/www/pmangular/app/lib/angular/angular-loader.js",
+		"/home/alfrednutile/www/angular/angular-phonecat/app/partials/phone-list.html",
+		"/home/alfrednutile/www/pmangular/app/api/v3/clients.php",
+		"/home/alfrednutile/www/angular/angular-phonecat/app/js/app.js",
+		"/home/alfrednutile/www/angular/angular-phonecat/app/partials/phone-detail.html",
+		"/home/alfrednutile/www/pmbackend/api/v3/index.php",
+		"/home/alfrednutile/www/pmangular/app/partials/clients.html",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-affix.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-alert.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-button.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-carousel.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-collapse.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-dropdown.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-modal.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-popover.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-scrollspy.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-tab.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-tooltip.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-transition.js",
+		"/home/alfrednutile/www/pmangular/app/js/bootstrap-typeahead.js",
+		"/home/alfrednutile/www/pmangular/app/js/jquery-latest.js",
+		"/home/alfrednutile/www/pmbackend/tpl/hosting-form.html",
+		"/home/alfrednutile/www/yboston/site/sites/all/modules/contrib/globalredirect/globalredirect.module",
+		"/home/alfrednutile/www/emma/indexOriginal.html",
+		"/home/alfrednutile/www/emma/index.html",
+		"/home/alfrednutile/www/fibermark/site/sites/all/modules/custom/fmk_vdt/Views/View.php",
+		"/home/alfrednutile/www/fibermark/site/sites/all/modules/custom/fmk_vdt/css/main-display-shared.css",
+		"/home/alfrednutile/www/fibermark/site/sites/all/modules/custom/fmk_vdt/css/window-shared.css",
+		"/home/alfrednutile/www/fibermark/site/sites/all/modules/custom/fmk_restful/models/Models.php",
+		"/home/alfrednutile/www/fibermark/site/sites/all/modules/custom/fj_cart_add/fj_cart_add.module",
+		"/home/alfrednutile/www/fibermark/site/sites/all/modules/custom/fmk_vdt/fmk_vdt.features.inc",
+		"/home/alfrednutile/www/fibermark/site/sites/all/modules/custom/fmk_vdt/templates/virtual_design_tool_full.tpl.php",
+		"/home/alfrednutile/www/fibermark/site/sites/all/modules/custom/fmk_vdt/templates/virtual_design_tool_node.tpl.php",
+		"/home/alfrednutile/www/fibermark/site/sites/all/modules/custom/fmk_vdt/css/loading-shared.css",
+		"/home/alfrednutile/www/pmbackend/js/app.js",
+		"/home/alfrednutile/www/pmbackend/tpl/sidebar-left.html",
+		"/home/alfrednutile/www/pmbackend/js/utils.js",
+		"/home/alfrednutile/www/pmbackend/js/globals.js",
+		"/home/alfrednutile/www/pmbackend/api/v3/migration.php",
+		"/home/alfrednutile/www/pmbackend/css/style.css",
+		"/home/alfrednutile/www/pmbackend/api/v3/clients.php",
+		"/home/alfrednutile/www/pmbackend/css/bootstrap.css",
+		"/home/alfrednutile/www/pmbackend/pmbackend.sublime-project",
+		"/home/alfrednutile/www/pmbackend/index.html",
+		"/home/alfrednutile/www/cellar/tutorial/part1/js/main.js",
+		"/home/alfrednutile/www/cellar/tutorial/final/js/main.js",
+		"/home/alfrednutile/www/cellar/tutorial/final/js/views/winelist.js",
+		"/home/alfrednutile/www/cellar/tutorial/part2/js/main.js",
+		"/home/alfrednutile/www/cellar/tutorial/final/api/index.php",
+		"/home/alfrednutile/www/cellar/tutorial/final/js/views/header.js",
+		"/home/alfrednutile/www/cellar/tutorial/final/index.html",
+		"/home/alfrednutile/www/pmbackend/tpl/header-menu.html",
+		"/home/alfrednutile/www/pmbackend/js/views/header-menu.js",
+		"/home/alfrednutile/www/pmbackend/js/attachments.js",
+		"/home/alfrednutile/www/pmbackend/api/v3/Slim/Logger.php",
+		"/home/alfrednutile/www/pmbackend/js/global.js",
+		"/home/alfrednutile/www/cellar/tutorial/final/js/utils.js",
+		"/home/alfrednutile/www/pmbackend/js/views/sidebar-left.js"
+	],
+	"find":
+	{
+		"height": 52.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"\"\n",
+			"];",
+			"getQuotesForClient",
+			"quote_id",
+			"');\n",
+			"valueFinal",
+			"status",
+			"quoteStatus",
+			");\n",
+			"percentage",
+			"28",
+			"push",
+			"span5",
+			">\n",
+			"getTasksByFilters",
+			"updateTask",
+			"\n	",
+			"TaskByStatus",
+			"getTasksByFilters",
+			"Hole",
+			"Lu",
+			"assig",
+			"updateTasks",
+			"taskDetails",
+			"id",
+			"TaskDetails",
+			"personDetails",
+			"getTask",
+			"TaskDetails",
+			"bringup",
+			"data",
+			"id",
+			"status",
+			">\n",
+			"setstatus",
+			"	\n",
+			"();\n",
+			"taskStatus",
+			"DESC",
+			"statusId",
+			"[], ",
+			"clientsDetails",
+			"index",
+			"peopleList",
+			"setImage",
+			"id",
+			"\"/>\n",
+			"query_string",
+			"globalredirect_goto",
+			"$seeIfGroup",
+			"class",
+			"css",
+			"FiberMark_Home",
+			"textures",
+			"getRelatedColorsToTexture",
+			"title",
+			"400",
+			"4005005",
+			"apectratio",
+			"console.log",
+			"client",
+			"clientName",
+			"HostedDetailView",
+			"content-",
+			"id",
+			"HostedDetailView",
+			"getClients",
+			"ClientCollection",
+			"HostingListItemView",
+			"log",
+			"',",
+			"HostingListView",
+			"header",
+			"HeaderView",
+			"tpl",
+			"clientId",
+			"save",
+			"new",
+			"hostings",
+			"new",
+			"winelist",
+			"save",
+			"                            <",
+			"font",
+			"beforeClose",
+			"close",
+			"client",
+			"clientId",
+			"php.log",
+			"getEmailsOfRole"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"taskDetails",
+			"clientDetails",
+			"id",
+			"pmbackend.log"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/home/alfrednutile/www/rubyroguesold/rro/app/controllers/rrolds_controller.rb",
+					"settings":
+					{
+						"buffer_size": 1959,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1946,
+								1946
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 810.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/alfrednutile/www/rubyroguesold/rro/app/views/rrolds/feed.atom.builder",
+					"settings":
+					{
+						"buffer_size": 1504,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								871,
+								871
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Rails/Ruby on Rails.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/alfrednutile/www/rubyroguesold/rro/app/views/rrolds/index.html.erb",
+					"settings":
+					{
+						"buffer_size": 1547,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								59,
+								59
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/home/alfrednutile/www/rubyroguesold/rro/app/views/layouts/application.html.erb",
+					"settings":
+					{
+						"buffer_size": 1282,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1258,
+								1258
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 90.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.sftp":
+	{
+		"height": 159.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 237.0,
+	"status_bar_visible": true
+}

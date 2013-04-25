@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @todo group into one the destroyCreate
+ */
+
 function getQuotesForClient($id) {
 	$data = new QuotesCrud();
 	$results = $data->get(array('id' => $id));
@@ -56,24 +60,100 @@ class QuotesCrud {
 	}
 
 	public function get($params) {
-		//build data object
-		//general
-		//includedItems
-		//notIncludedItems
-		//assumptions
-		//lineitems
-		//overhead
-		$data = new stdClass;
+
 		$wheres = array('clientid' => $params['id']);
 		$general = self::_getDataObject(array('table' => 'quotes', 'wheres' => $wheres));
-		$data->general = $general;
-		return $data;
+		if(empty($general)) {
+			$results['data'] = array();
+			$results['error'] = array();
+			return $results;
+		} else {
+			//Continue with related data
+			$results['data']['general'] = $general[0];
+			$quote_id = $general[0]->id;
+			
+			$wheres = array('quote_id' => $quote_id);
+			$overhead = self::_getDataObjectPDO(array('table' => 'quote_overhead', 'wheres' => $wheres));
+			$results['data']['overhead'] = $overhead;	
+			
+			$wheres = array('quote_id' => $quote_id);
+			$assumptions = self::_getDataObject(array('table' => 'quote_assumptions', 'wheres' => $wheres));
+			$results['data']['assumptions'] = $assumptions;
+
+			$wheres = array('quote_id' => $quote_id);
+			$lineitems = self::_getDataObject(array('table' => 'quote_line_item', 'wheres' => $wheres));
+			$results['data']['lineitems'] = $lineitems;
+
+			$wheres = array('quote_id' => $quote_id, 'yesno' => '1');
+			$includedItems = self::_getDataObject(array('table' => 'quote_includes', 'wheres' => $wheres));
+			$results['data']['includedItems'] = $includedItems;
+
+			$wheres = array('quote_id' => $quote_id, 'yesno' => '0');
+			$notIncludedItems = self::_getDataObject(array('table' => 'quote_includes', 'wheres' => $wheres));
+			$results['data']['notIncludedItems'] = $notIncludedItems;
+
+			$results['error'] = array();
+			return $results;
+		}	
 	}
+	//@todo move into toher area
+	private static function _getDataObjectPDO($params) {
+		$table = $params['table'];
+		$wheres = $params['wheres'];
+		$set = '';
+		$wheres = self::_prepareQueryArray($wheres);
+
+		foreach($wheres as $key => $value) {
+		 if($key == 'set') {
+		 	$set .= " $value=:$value ";
+		 }
+		}
+		//$wheres = self::_prepareQueryString($wheres);
+		$sql = "SELECT * FROM $table WHERE $set";
+
+		try {
+			$db = getConnection();
+			$stmt = $db->prepare($sql);
+			foreach ($wheres['tokenValues'] as $key => $value) {
+				$split = explode(':', $value);
+				$stmt->bindValue($split[0], $split[1]);	
+			}	
+			$stmt->execute();
+			$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+			$db = null;
+			error_log("Date Overheads  " . print_r($data, 1), 3, '/var/tmp/pmbackend.log');
+			
+			return $data;
+		} catch(PDOException $e) {
+			echo '{"error":{"text  for id '.$id.'":'. $e->getMessage() .'}}'; 
+		}
+	}
+
+	private static function _prepareQueryArray($data) {		
+		//Build Query from field labels and values
+		$set = array();
+		$valueFinal = array();
+		foreach($data as $key => $value) {
+			$set[] = $key;
+			($key == 'created')  ? $value = date('Y-m-d H:i:s') : null;
+			$valueFinal[] = (empty($value)) ? 'NULL' : $value;
+			(!is_numeric($value)) ? $value = "$value" : null;
+			$setValues[] = "$key:$value";
+		}
+		$set = implode(', ', $set);
+		$values = implode(", ", $valueFinal);
+
+		return array('set' => $set, 'values' => $values, 'tokenValues' => $setValues);
+	}
+	
+
 	//@todo move into toher area
 	private static function _getDataObject($params) {
 		$table = $params['table'];
 		$wheres = $params['wheres'];
-		$wheres = implode(' AND ', $wheres);
+
+		$wheres = self::_prepareQueryString($wheres);
+		
 		$sql = "SELECT * FROM $table WHERE $wheres";
 		try {
 			$db = getConnection();
@@ -81,12 +161,13 @@ class QuotesCrud {
 			$stmt->execute();
 			$data = $stmt->fetchAll(PDO::FETCH_OBJ);
 			$db = null;
-			error_log("results of query" . print_r($data, 1), 3, '/var/tmp/pmbackend.log');
+			//error_log("results of query" . print_r($data, 1), 3, '/var/tmp/pmbackend.log');
 			return $data;
 		} catch(PDOException $e) {
 			echo '{"error":{"text  for id '.$id.'":'. $e->getMessage() .'}}'; 
 		}
 	}
+
 
 	public function put($object) {
 
@@ -146,20 +227,23 @@ class QuotesCrud {
 		$prepareQuery = self::_insertArrayBasedDataSet($params);
 	}
 
-	private static function _prepareQueryArray($data) {		
+
+
+	private static function _prepareQueryString($data) {		
 		//Build Query from field labels and values
 		$set = array();
 		$valueFinal = array();
 		foreach($data as $key => $value) {
-			$set[] = $key;
 			($key == 'created')  ? $value = date('Y-m-d H:i:s') : null;
-			$valueFinal[] = (empty($value)) ? 'NULL' : $value;
+			//$valueFinal = (empty($value)) ? 'NULL' : $value;
+			$valueFinal = $value;
+			$set[] = "$key = $valueFinal";
 		}
-		$set = implode(', ', $set);
-		$values = "'" . implode("', '", $valueFinal) . "'";
+		$where = implode(' AND ', $set);
 
-		return array('set' => $set, 'values' => $values);
+		return $where;
 	}
+
 
 	private static function _insertArrayBasedDataSet($params) {
 		$data = $params['data'];

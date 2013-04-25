@@ -267,7 +267,13 @@ function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
   $scope.clientId = $routeParams.clientId;
   
  	$scope.quote = Quotes.api.query({clientId: $routeParams.clientId}, [], function(results){
- 		if(results.length < 1) {
+ 		console.log($(results[0].general).length);
+ 		//Defaults
+ 		//@todo merge all to here for defaults then 
+ 		//  just overwrite if there are results
+ 		$scope.quote.quoteStatus = Quotes.quoteStatus();
+ 		
+ 		if($(results[0].general).length === 0) {
 	      $scope.quote.lineitems = {};
 	 	  $scope.quote.general = Quotes.general();
 	      $scope.quote.lineitems = Quotes.lineitems();
@@ -279,6 +285,16 @@ function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
 	      var notInc = Quotes.includedItems();
 	      notInc[0].yesno = 0;
 	      $scope.quote.notIncludedItems = notInc;
+	      console.log($scope.quote);
+ 		} else {
+ 		  //@todo should not have to swap it out here
+ 		  $scope.quote.general = results[0].general;
+		  $scope.quote.lineitems = results[0].lineitems;
+	      $scope.quote.overhead = results[0].overhead;
+	      $scope.quote.assumptions = results[0].assumptions;
+	      $scope.quote.includedItems = results[0].includedItems;
+	      $scope.quote.notIncludedItems = results[0].notIncludedItems;
+		  console.log($scope.quote);
  		}
  	});
 
