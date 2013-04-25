@@ -7,17 +7,15 @@
 function getQuotesForClient($id) {
 	$data = new QuotesCrud();
 	$results = $data->get(array('id' => $id));
-	echo json_encode($results);
+	echo json_encode($results, JSON_NUMERIC_CHECK);
 }
 
 function addQuote() {
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
- 	$test = print_r($data, 1);
-  	error_log("Results of Quote Update {$test}", 3, '/var/tmp/pmangularQuotes.log');
   	$quoteCrud = new QuotesCrud();
   	$results = $quoteCrud->post($data);
-  	echo json_encode($results); 
+  	echo json_encode($results, JSON_NUMERIC_CHECK); 
 }
 
 

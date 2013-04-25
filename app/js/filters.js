@@ -46,4 +46,13 @@ filter('datefilter', function() {
         return name;
       }
     };
+  }).filter('quoteIntro', function() {
+    return function(id) {
+      if(id >= 1) {
+        var message = "Edit Quote#"+id;
+      } else {
+        var message = "New Quote - ";
+      }
+        return message;
+      };
   });

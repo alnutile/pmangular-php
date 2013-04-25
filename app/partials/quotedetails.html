@@ -13,7 +13,8 @@
 			<div class="accordion-group">
 				<div class="accordion-heading">
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{quote.general.id}}">
-            Edit Quote details for Project: {{quote.general.project_name}} 
+
+            {{ quote.general.id | quoteIntro }} details for Project: {{quote.general.project_name}} 
             <br>
             Total Estimate: ${{quote.general.total_quote}} 
             <br>
@@ -133,7 +134,6 @@
                         <th>Hours from Total Dev High</th>
                       </tr>
                     </thead>
-                    {{quote.overhead}}
                     <tr ng-repeat="percentages in quote.overhead">
                       <td class="span4">
                         <label>{{percentages.label}}:</label>
