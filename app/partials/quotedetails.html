@@ -1,0 +1,198 @@
+
+<div data-ng-include data-src="'partials/clientsQuotes.html'"></div>
+
+<div class="span9">
+
+	<div class="alert alert-success">
+	  Manage Quotes. You can see all the related quotes below to the client.
+    You can edit them by clicking the edit link. or Make New
+	</div>
+	<div>
+		<!--start accordion-->
+		<div class="accordion" id="accordion2">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{quote.general.id}}">
+
+            {{ quote.general.id | quoteIntro }} details for Project: {{quote.general.project_name}} 
+            <br>
+            Total Estimate: ${{quote.general.total_quote}} 
+            <br>
+            Total Estimate High: ${{quote.general.total_quote_high}} 
+            <br>
+            Project Size: {{ quote.general.size | sizeLabel }}
+            <br>
+            Status: {{ quote.general.status | statusLabel }}
+            <br>
+            Created: {{ quote.general.created }}
+					</a>
+				</div>
+				<div id="collapse{{quote.general.id}}" class="accordion-body">
+		      		<div class="accordion-inner">
+		        		<form class="form-horizontal">
+                  <label for="client-id">Client ID:</label>
+									<input ng-model="clientId" type="text" class="span1" disabled/>
+									<p class="help-block">Stored Client ID</p>
+									
+                  <label for="record-id">Record ID:</label>
+									<input ng-model="quote.general.id" type="text" class="span1" disabled/>
+                  
+                  <label>Project Name</label>
+									<input ng-model="quote.general.project_name" type="text" class="span6"/>
+									<p class="help-block">enter a name?</p>								
+                  
+                  <label>Executive Summary</label>
+									<input ng-model="quote.general.exec_summary" type="text" class="span6"/>
+									<p class="help-block">executive summary...</p>		                 
+                  
+                  <label>Long Descripton</label>
+									<textarea rows="3" ng-model="quote.general.long_description" class="span6"></textarea>
+									<p class="help-block">longer summary...</p>		                 
+									
+                  <label>Status:</label>
+                  <select class="span4 chzn-select" data-rel="chosen"  ng-model="quote.general.status" 
+                    ng-options="stat.id as stat.name for stat in quote.quoteStatus"></select>
+
+                  <label>Size:</label>
+                  <select class="span4 chzn-select" data-rel="chosen" ng-model="quote.general.size" 
+                    ng-options="s.id as s.name for s in quote.sizeChoices"></select>
+               
+                  <label>Line Items</label>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Major Feature</th>
+                        <th>Feature Set</th>
+                        <th>Item</th>
+                        <th>Hours</th>
+                        <th><a href="#docModal" data-toggle="modal">DOC</a></th>
+                        <th>High</th>
+                      </tr>
+                    </thead>
+                    <tr ng-repeat="lineitem in quote.lineitems"></td>
+                      <td class="span2"><input class="span12" type="text" ng-model="lineitem.major_feature"></td>
+                      <td class="span2"><input class="span12" type="text" ng-model="lineitem.feature_set"></td>
+                      <td class="span4"><input class="span12" type="text" ng-model="lineitem.item"></td>
+                      <td class="span2"><input class="span12 line-item-hours" id="line-item-{{$index}}" min="0" max="99" step="any" type="number" ng-model="lineitem.hours" ng-change="updateHigh()"></td>
+                      <td class="span2">
+                        <select 
+                          class="span12 chzn-select" 
+                          ng-change="updateHigh()"
+                          ng-model="lineitem.doc"
+                          data-rel="chosen" 
+                          name="doc"
+                          ng-options="d.applied as d.name for d in quote.docs">
+                        </select>
+                      </td>
+                      <td class="span2"><input class="span12 line-item-high" min="0" max="99" step="any" type="number" ng-model="lineitem.high" disabled /></td>                   
+                    </tr>
+                  </table>
+
+                  <button class='btn addlineitem' ng-click="addLineItem()">Add Line Item</button>
+ 
+                   <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Total Development</th>
+                        <th>Total High Development</th>
+                      </tr>
+                    </thead>
+                    <tr>
+                      <td class="span1"><input class="span6 total-hours" step="any" type="number" ng-model="quote.general.line_items_total_hours" disabled /></td>
+                      <td class="span1"><input class="span6 total-hours-high" step="any" type="number"  ng-model="quote.general.line_items_total_high_hours" disabled /></td>                
+                    </tr>
+                  </table>
+ 
+ 
+                  <label>What's Included</label>
+                  <div  ng-repeat="included in quote.includedItems" class="controls-row">
+                    <input id="{{included.id}}" class="span6" type="text" ng-model="included.description">
+                  </div> 
+                  <button class='btn' ng-click="addIncluded()">Add Included Item</button>
+ 
+                  <label>What's Not Included</label>
+                  <div  ng-repeat="notIncluded in quote.notIncludedItems" class="controls-row">
+                    <input id="{{notIncluded.id}}" class="span6" type="text" ng-model="notIncluded.description">
+                  </div> 
+                  <button class='btn' ng-click="addNotIncluded()">Add Not Included Item</button>
+  
+                  <label>Assumptions</label>
+                  <div  ng-repeat="assumed in quote.assumptions" class="controls-row">
+                    <input id="{{assumed.id}}" class="span6" type="text" ng-model="assumed.description">
+                  </div> 
+                  <button class='btn' ng-click="addAssumption()">Add Assumption</button>
+                   
+                  <h2>Overheads</h2>
+
+ 
+                   <table class="table overheads">
+                    <thead>
+                      <tr>
+                        <th>Label</th>
+                        <th>Percentage</th>
+                        <th>Hours from Total Dev</th>
+                        <th>Hours from Total Dev High</th>
+                      </tr>
+                    </thead>
+                    <tr ng-repeat="percentages in quote.overhead">
+                      <td class="span4">
+                        <label>{{percentages.label}}:</label>
+                      </td>
+                      <td class="span2">
+                        <input ng-change="updateOverhead()" class="overhead-{{percentages.code}}" ng-model="percentages.percentage" step="any" type="number" >
+                      </td>                
+                      <td class="span2">
+                          <input class="overhead-{{percentages.code}}-total" ng-model="percentages.total"  min="0" step="any" type="number" disabled/>
+                      </td>  
+                      <td class="span2">
+                          <input class="overhead-{{percentages.code}}-high" ng-model="percentages.totalhigh"  min="0" step="any" type="number"  disabled/>
+                      </td>
+                  </tr>
+                  </table>
+                  <label>Total Overhead Hours: {{quote.totalPerc}}</label>
+                  <label>Total Overhead Hours High: {{quote.totalPercHigh}} </label>
+
+                                                                 
+                  <h1>Total Hours all Together:</h1>
+									<input ng-model="quote.general.total" step="any" type="number" class="span2 total-hours-and-overhead" disabled/>
+                  <input ng-model="quote.general.total_high" step="any" type="number" class="span2 total-hours-and-overhead-high" disabled/>
+									<p class="help-block">no tweaking here....</p> 
+
+                  <h2>Total Estimate : ${{quote.general.total_quote}}</h2>
+                  <h2>Total Estimate High: ${{quote.general.total_quote_high}} </h2>              
+                               
+                  <div class="form-actions">
+                    <button ng-click="quoteSave()" type="save" class="save btn-primary">Save</button>
+                    <button type="delete" class="delete btn btn-danger">Delete</button>
+                  </div>
+                </form>
+		      		</div>
+		    	</div>
+			</div>
+		</div>
+		<!--end accordion-->
+	</div>
+</div>
+<div id="docModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="docLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="docLabel">Degree of Certainty</h3>
+  </div>
+  <div class="modal-body">
+    <table class="table-striped table-bordered">
+      <thead>
+        <td>Level</td>
+        <td>Name</td>
+        <td>Applied</td>
+      </thead>
+      <tr ng-repeat="docLine in quote.docs">
+        <td>{{docLine.level}}</td>
+        <td>{{docLine.name}}</td>
+        <td>{{docLine.applied}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+
+

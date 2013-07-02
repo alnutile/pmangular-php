@@ -30,4 +30,29 @@ filter('datefilter', function() {
         return level;
       }
     };
+  }).filter('sizeLabel', function() {
+    return function(sizeId) {
+      var scope = this;
+      if(sizeId >= 0) {
+        var name = scope.quote.sizeChoices[sizeId]["name"];
+        return name;
+      }
+    };
+  }).filter('statusLabel', function() {
+    return function(statusId) {
+      var scope = this;
+      if(statusId >= 0) {
+        var name = scope.quote.quoteStatus[statusId]["name"];
+        return name;
+      }
+    };
+  }).filter('quoteIntro', function() {
+    return function(id) {
+      if(id >= 1) {
+        var message = "Edit Quote#"+id;
+      } else {
+        var message = "New Quote - ";
+      }
+        return message;
+      };
   });

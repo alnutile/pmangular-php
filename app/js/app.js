@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives']).
+angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ui.bootstrap']).
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/dash', {templateUrl: 'partials/dash.html', controller: DashWidget});
 
@@ -21,7 +21,13 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives'])
     /*Task Service*/
     $routeProvider.when('/task', {templateUrl: 'partials/taskList.html'});
     $routeProvider.when('/task/:taskId', {templateUrl: 'partials/taskDetails.html', controller: TaskDetails});
-
+    
+    /*Quote Service*/
+    $routeProvider.when('/quotes', {templateUrl: 'partials/clientsQuotes.html'});
+    $routeProvider.when('/quotes/:clientId', {templateUrl: 'partials/quotedetails.html', controller: QuoteDetails});
+    $routeProvider.when('/quotes/edit/:quoteId', {templateUrl: 'partials/quotedetails.html', controller: QuoteDetails});
+    $routeProvider.when('/quotes/new/:clientId', {templateUrl: 'partials/quotedetails.html', controller: QuoteDetails});
+	
     $routeProvider.otherwise({redirectTo: '/dash', controller: DashWidget});
   }]).run(['$rootScope', '$location', function($rootScope, $location){
    var path = function() { return $location.path();};

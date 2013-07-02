@@ -250,9 +250,7 @@ function DashWidget(TaskByStatus, $location, $scope, $http) {
 		if($scope.searchTerm.length >= 3) {
 			if($scope.previousSearch != $scope.searchTerm) {
 				$scope.previousSearch = $scope.searchTerm;
-				console.log($scope.searchTerm);
 				$http.post('api/v3/searchall', {searchstring:$scope.searchTerm}).success(function(data) {
-					console.log(data);
 			    	return $scope.searchResults = data;
 				});
 			}
@@ -262,3 +260,185 @@ function DashWidget(TaskByStatus, $location, $scope, $http) {
 }
 //@todo look at why this extra call
 DashWidget.$inject = ['TaskByStatus', '$location', '$scope', '$http'];
+
+
+function QuoteDetails(Quotes, $routeParams, $location, $scope, $http) {
+  //@todo should have access to routeParams in the view
+  $scope.clientId = $routeParams.clientId;
+  
+ 	$scope.quote = Quotes.api.query({clientId: $routeParams.clientId}, [], function(results){
+ 		console.log($(results[0].general).length);
+ 		//Defaults
+ 		//@todo merge all to here for defaults then 
+ 		//  just overwrite if there are results
+ 		$scope.quote.quoteStatus = Quotes.quoteStatus();
+ 		
+ 		if($(results[0].general).length === 0) {
+	      $scope.quote.lineitems = {};
+	 	  $scope.quote.general = Quotes.general();
+	      $scope.quote.lineitems = Quotes.lineitems();
+	      $scope.quote.includedItems = Quotes.includedItems();
+	      $scope.quote.assumptions = Quotes.assumptions();
+	      $scope.quote.overhead = Quotes.overhead();
+	      $scope.quote.quoteStatus = Quotes.quoteStatus();
+	      $scope.quote.general.status = 0;
+	      var notInc = Quotes.includedItems();
+	      notInc[0].yesno = 0;
+	      $scope.quote.notIncludedItems = notInc;
+	      console.log($scope.quote);
+ 		} else {
+ 		  //@todo should not have to swap it out here
+ 		  $scope.quote.general = results[0].general;
+		  $scope.quote.lineitems = results[0].lineitems;
+	      $scope.quote.overhead = results[0].overhead;
+	      $scope.quote.assumptions = results[0].assumptions;
+	      $scope.quote.includedItems = results[0].includedItems;
+	      $scope.quote.notIncludedItems = results[0].notIncludedItems;
+		  console.log($scope.quote);
+ 		}
+ 	});
+
+  $scope.quote.sizeChoices = Quotes.sizeChoices();
+  $scope.quote.rates = Quotes.rates();
+  $scope.quote.docs = Quotes.docs();
+  $scope.quote.totalPerc = 0;
+  $scope.quote.totalPercHigh = 0;
+  
+  $scope.addLineItem = function() {
+    var newline = Quotes.lineitems();
+    $scope.quote.lineitems.push(newline[0]);
+  }  
+
+  $scope.addIncluded = function() {
+    var newline = Quotes.includedItems();
+    $scope.quote.includedItems.push(newline[0]);
+  }  
+
+  $scope.addNotIncluded = function() {
+    var newline = Quotes.includedItems();
+    newline[0].yesno = 0;
+    $scope.quote.notIncludedItems.push(newline[0]);
+  }  
+  
+  $scope.addAssumption = function() {
+    var newline = Quotes.assumptions();
+    $scope.quote.assumptions.push(newline[0]);
+  } 
+	
+  $scope.updateHigh = function() {
+
+   var hoursTotal = 0;
+   var highTotal = 0;
+   var thisLine = this.lineitem;
+   var hours = thisLine.hours;
+   var doc = thisLine.doc;
+   var high = doc * hours;
+   
+   this.lineitem.high = Math.round(high*100)/100;
+   
+   angular.forEach(this.quote.lineitems, function(value, key) {
+      hoursTotal = hoursTotal + value.hours;
+      highTotal = highTotal + value.high;
+   });
+      
+   var highTotal = Math.round(highTotal*100)/100;
+
+   this.quote.general.line_items_total_hours = hoursTotal;
+   this.quote.general.line_items_total_high_hours = highTotal;
+
+
+   //Seems since the change is happening here I need to 
+   //Also update the % fields
+
+   var quoteOverhead = angular.copy(this.quote.overhead);
+   angular.forEach(this.quote.overhead, function(value, key){
+   	//Total Hours x % 
+   	var overHeadItemValue = hoursTotal * value.percentage;
+   	var overHeadItemValue = Math.round(overHeadItemValue*100)/100;
+
+   	//High Hours
+   	var overHeadItemValueHigh = highTotal * value.percentage;
+   	var overHeadItemValueHigh = Math.round(overHeadItemValueHigh*100)/100;
+
+   	quoteOverhead[key].total = overHeadItemValue;
+	quoteOverhead[key].totalhigh = overHeadItemValueHigh;
+   });
+
+   	$scope.quote.overhead = quoteOverhead;
+
+  	//Set totals for showing Overhead Totals
+  	var totalOverhead = Quotes.totalPercs($scope.quote.overhead);
+  	//Just used to set a label on the form
+  	$scope.quote.totalPerc = totalOverhead[0];
+  	$scope.quote.totalPercHigh = totalOverhead[1];
+
+   //Update Total high and low at the bottom of the sheet
+   //this it the total of line items and % area
+
+   $scope.quote.general.total = hoursTotal + totalOverhead[0];
+   $scope.quote.general.total_high = highTotal + totalOverhead[1];
+
+   //Set Totals Monetary
+   //@todo move these into a directive?
+   //@todo make this value 100 for example 
+   //  dynamic
+	var Costs = Quotes.totalCost($scope);
+	$scope.quote.general.total_quote = Math.round(Costs[0]*100)/100;
+	$scope.quote.general.total_quote_high = Math.round(Costs[1]*100)/100;
+
+  } 
+  
+  $scope.updateOverhead = function() {
+  	var changedOverhead = angular.copy(this.percentages);
+  	//Get now totals
+
+  	var totalLineItemHours = $scope.quote.general.line_items_total_hours;
+  	var totalLineItemHighHours = $scope.quote.general.line_items_total_high_hours;
+  	var newTotalPercentage = changedOverhead.percentage;
+  	var newTotal = newTotalPercentage * totalLineItemHours;
+  	var newTotal = Math.round(newTotal*100)/100;
+  	var newHigh = newTotalPercentage * totalLineItemHighHours; 
+  	var newHigh = Math.round(newHigh*100)/100;
+  	
+  	this.percentages.total = newTotal;
+  	this.percentages.totalhigh = newHigh;
+
+  	//Set totals for showing Overhead Totals
+  	var totalOverhead = Quotes.totalPercs($scope.quote.overhead);
+  	//Just used to set a label on the form
+  	$scope.quote.totalPerc = totalOverhead[0];
+  	$scope.quote.totalPercHigh = totalOverhead[1];
+
+  	//reset totals
+  	var total = totalLineItemHours + totalOverhead[0]; 
+  	var total_high = totalLineItemHighHours + totalOverhead[1]; 
+   	$scope.quote.general.total = total;
+   	$scope.quote.general.total_high = total_high;
+
+  	var Costs = Quotes.totalCost($scope);
+  	$scope.quote.general.total_quote = Math.round(Costs[0]*100)/100;
+   	$scope.quote.general.total_quote_high = Math.round(Costs[1]*100)/100;
+
+
+  }
+
+  $scope.quoteSave = function() {
+  	//@todo seems I should not have to build these
+    var sendQuote = {};
+    sendQuote.general = $scope.quote.general;
+    sendQuote.lineitems = $scope.quote.lineitems;
+    sendQuote.notIncludedItems = $scope.quote.notIncludedItems;
+    sendQuote.includedItems = $scope.quote.includedItems;
+    sendQuote.assumptions = $scope.quote.assumptions;
+    sendQuote.overhead = $scope.quote.overhead;
+    
+    Quotes.api.save({}, sendQuote, function(res) { 
+        console.log($scope.quote);
+        console.log(res);
+        $scope.quote.general.id = res.general.id;
+    });
+  }
+
+}
+QuoteDetails.$inject = ['Quotes', '$routeParams', '$location', '$scope', '$http'];
+

@@ -56,7 +56,6 @@ describe('PM Controllers', function() {
     it('should fetch person details', function(){
       $httpBackend.flush();
       expect(scope.personDetails).toEqualData(xyzPersonData());
-      console.log(scope.personDetails);
     });
   });
 
