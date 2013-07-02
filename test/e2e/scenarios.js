@@ -4,7 +4,7 @@
 /* test is at http://localhost/pmangular/test/e2e/runner.html */
 /* this is after running scripts/e2e-test.sh */
 describe('PMAngular App', function() {
-/*
+
   it('should automatically redirect to /dash when location hash/fragment is empty', function() {
     browser().navigateTo('../../app/index.html');
     expect(browser().location().url()).toBe("/dash");
@@ -48,8 +48,8 @@ describe('PMAngular App', function() {
     it('should render client list when user navigates to /clients', function() {
       expect(repeater('ul#clients li').count()).toBeGreaterThan(2);
     
-      input('query').enter('BioScale');
-      expect(repeater('ul#clients li').count()).toBe(1);
+      input('query').enter('Client-1');
+      expect(repeater('ul#clients li').count()).toBe(5);
 
       input('query').enter('Bob the builder');
       expect(repeater('ul#clients li').count()).toBe(0);
@@ -62,18 +62,11 @@ describe('PMAngular App', function() {
     });
 
     it('should render a client and their details', function(){
-      expect(binding('clientDetails.clientName')).toBe('BioScale');
+      expect(binding('clientDetails.clientName')).toBe('Client-1');
     });
 
     it('it should update the user name and list', function(){
-      expect(element('a#client-1').text()).toBe('BioScale');
-      // element('#clientName').val('test update');
-      // expect(element('#clientName').val()).toBe('test update');
-      // element('#save-1').click();
-      // expect(element('a#client-1').text()).toBe('test update');
-      // element('#clientName').val('BioScale');
-      // element('#save-1').click();
-      // expect(element('a#client-1').text()).toBe('BioScale');
+      expect(element('a#client-1').text()).toBe('Client-1');
       
     });
 
@@ -89,8 +82,8 @@ describe('PMAngular App', function() {
     it('should render hostings list when user navigates to /hostings', function() {
       expect(repeater('ul#hostingList li').count()).toBeGreaterThan(2);
     
-      input('query').enter('BioScale');
-      expect(repeater('ul#hostingList li').count()).toBe(1);
+      input('query').enter('Client-1');
+      expect(repeater('ul#hostingList li').count()).toBe(5);
 
       input('query').enter('Bob the builder');
       expect(repeater('ul#hostingList li').count()).toBe(0);
@@ -103,12 +96,12 @@ describe('PMAngular App', function() {
       browser().navigateTo('../../app/index.html#/hostings/1');
     });
 
-    it('should render hostings detials view for BioScale who have 2', function() {
+    it('should render hostings detials view for Client-1 who have 2', function() {
       expect(repeater('.accordion-group').count()).toBe(2);
       expect(element('input#client-id-5').val()).toBe("1");
     });
   }); //End Hostings Details view
-*/
+
   describe('Quoting System', function() {
 
     beforeEach(function() {

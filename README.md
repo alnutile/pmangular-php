@@ -1,4 +1,56 @@
-# angular-seed — the seed for AngularJS apps
+# This project was created from the th angular-seed — the seed for AngularJS apps
+
+This is not a good example of RESTful end points. It is an older project and reading books like RESTful Web Services Cookbook 
+https://kindle.amazon.com/work/restful-web-services-cookbook-ebook/B003466ER0/B0043D2ESQ make that very clear.
+
+This has some nice test examples as they interact with the form including select select fields, the using method and so forth.
+
+The quote system has a ton of potential thanks to the mind of Billy Jones who made the original spreadsheet full of the logic to make this happen. I hope to use this on projects moving forward.
+
+Plus it was just super fun to use Angular.js and I hope to add more see Roadmap
+
+## Demo
+
+[Video]
+
+## Overview
+
+Wanted to make a prototype of a PM system for the company I am at to see how Angular and handle it. I did not do any authentication.
+SlimPHP is being used for the rest points. You can see that in the app/api/v3 folder.
+
+
+## Setup
+
+The setup for me, since I run apache on my machine would be these steps.
+
+  * Create a db phprest and import database file in db folder.
+  * Setup a vhost file that points to the folder you are serving this app from. You can see the [GIST] of mine here
+  * Make sure the url you use can be reach by your machine. For me that meant up dating me /etc/hosts file [GIST] and reload apache
+  * Setup the db config file here app/api/v3/index.php way at the bottom.
+  * Then go to the url of what you entered and but with app at the end of it eg http://localhost/app
+
+## Running Tests
+
+The tests are written in the test/e2e folder in the scenarious.js file. You will need karma to run this.
+http://pmangular.local.com/test/e2e/runner.html
+I run them here to demo it [VIDEO]
+
+
+## Theme is copyright 
+
+See this site for more info
+[THEME SITE]
+
+
+# Roadmap
+
+Staff Authentication
+Client Authentication
+Notifications on success or error 
+
+
+
+# Below are the notes from Angular Seed
 
 This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app.
 You can use it to quickly bootstrap your angular webapp projects and dev environment for these
