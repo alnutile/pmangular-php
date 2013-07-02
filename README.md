@@ -19,13 +19,13 @@ Wanted to make a prototype of a PM system for the company I am at to see how Ang
 SlimPHP is being used for the rest points. You can see that in the app/api/v3 folder.
 
 
-## Setup
+## Setup
 
 The setup for me, since I run apache on my machine would be these steps.
 
   * Create a db phprest and import database file in db folder.
-  * Setup a vhost file that points to the folder you are serving this app from. You can see the [GIST] of mine here
-  * Make sure the url you use can be reach by your machine. For me that meant up dating me /etc/hosts file [GIST] and reload apache
+  * Setup a vhost file that points to the folder you are serving this app from. You can see the https://gist.github.com/alnutile/5914190 of mine here
+  * Make sure the url you use can be reach by your machine. For me that meant up dating me /etc/hosts file https://gist.github.com/alnutile/5914190 and reload apache
   * Setup the db config file here app/api/v3/index.php way at the bottom.
   * Then go to the url of what you entered and but with app at the end of it eg http://localhost/app
 
@@ -39,7 +39,7 @@ I run them here to demo it [VIDEO]
 ## Theme is copyright 
 
 See this site for more info
-[THEME SITE]
+https://wrapbootstrap.com/theme/acme-responsive-admin-template-WB0JLR295
 
 
 # Roadmap
@@ -47,8 +47,7 @@ See this site for more info
 Staff Authentication
 Client Authentication
 Notifications on success or error 
-
-
+Remove copyright theme
 
 # Below are the notes from Angular Seed
 
