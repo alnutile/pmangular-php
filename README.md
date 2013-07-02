@@ -8,7 +8,7 @@ Some features include
   * Dashboard
   * Hosting records 
 
-All if this is super super not even ALPHA
+All if this is super super not even ALPHA material
 
 ## This project was created from the the angular-seed — the seed for AngularJS apps
 
