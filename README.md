@@ -1,4 +1,4 @@
-# This project was created from the th angular-seed — the seed for AngularJS apps
+# This project was created from the the angular-seed — the seed for AngularJS apps
 
 This is not a good example of RESTful end points. It is an older project and reading books like RESTful Web Services Cookbook 
 https://kindle.amazon.com/work/restful-web-services-cookbook-ebook/B003466ER0/B0043D2ESQ make that very clear.
