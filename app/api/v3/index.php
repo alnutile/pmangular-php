@@ -122,7 +122,7 @@ function getTasksByStatus($id) {
 	//What no parmBing?
 	//It had touble dealing with an comma separated list.
 	//@todo come back and get this to work with bindParam
-	$id = mysql_real_escape_string($id);
+	//$id = mysql_real_escape_string($id);
 	$sql = "select id, drupalId, project_id, name, created, due, expected_time, status, meeting, actual_time, billable, level  FROM tasks WHERE status IN($id) ORDER BY id DESC";
 	try {
 		$db = getConnection();
