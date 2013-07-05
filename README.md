@@ -29,7 +29,7 @@ http://angular.alfrednutile.info/
 
 ### Video
 
-[Video]
+[![Angular.js Task System](http://img.youtube.com/vi/RjCJNn7wpj0/0.jpg)](http://www.youtube.com/watch?v=RjCJNn7wpj0)
 
 ## Overview
 
