@@ -23,6 +23,12 @@ Plus it was just super fun to use Angular.js and I hope to add more see Roadmap
 
 ## Demo
 
+### WebDemo
+
+http://angular.alfrednutile.info/
+
+### Video
+
 [Video]
 
 ## Overview
