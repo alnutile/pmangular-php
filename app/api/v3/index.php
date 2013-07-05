@@ -413,15 +413,5 @@ function findByName($query) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
-
-function getConnection() {
-	$dbhost="127.0.0.1";
-	$dbuser="root";
-	$dbpass="thisisit05";
-	$dbname="phprest";
-	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	return $dbh;
-}
-
+require_once('./settings.php');
 ?>
